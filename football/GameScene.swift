@@ -7,18 +7,59 @@
 
 import SpriteKit
 
+let DEFAULT_WIDTH = 200.0
+let DEFAULT_HEIGHT = 200.0
+
 class GameScene: SKScene {
     
-    let firstSpriteNode = SKSpriteNode(color: UIColor.red, size: CGSize(width: 200.0, height: 200.0))
+//    let firstSpriteNode = SKSpriteNode(color: UIColor.red, size: CGSize(width: 200.0, height: 200.0))
 //    let secondSpriteNode = SKSpriteNode(color: UIColor.blue, size: CGSize(width: 100.0, height: 100.0))
+    var balls :[SKSpriteNode] = [SKSpriteNode]()
+    var timerBalls = Timer()
+    
     let ballNode = SKSpriteNode(imageNamed: "ball")
+    let background = SKSpriteNode(imageNamed: "background")
+    let topInfoBar = SKSpriteNode(color: UIColor.systemGreen, size: CGSize(width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT))
+    let goalNode = SKSpriteNode(imageNamed: "goal")
+    let goalPlayerNode = SKSpriteNode(imageNamed: "goal")
     
     override func didMove(to view: SKView) {
 //        addChild(firstSpriteNode)
 //        firstSpriteNode.position = CGPoint(x: frame.midX, y: frame.midY)
 //        firstSpriteNode.anchorPoint = CGPoint.zero
-        addChild(ballNode)
-        ballNode.size = CGSize(width: 200.0, height: 200.0)
+        background.position = CGPoint(x: frame.midX, y: frame.midY)
+        addChild(background)
+        background.zPosition = -1
+        
+        background.addChild(ballNode)
+        ballNode.zPosition = 1
+        ballNode.size = CGSize(width: 150.0, height: 150.0)
+        //priradenie fyzickeho tela pre loptu
+        ballNode.physicsBody = SKPhysicsBody(circleOfRadius: ballNode.size.width/2)
+//        textureNode.physicsBody!.allowsRotation = false
+        //restitution reprezentuje kolko energie sa uvolni pri kolizii max je 1.0
+        ballNode.physicsBody!.restitution = 1.0
+        
+        topInfoBar.size.width = frame.width
+        topInfoBar.size.height = frame.height / 10
+        topInfoBar.position = CGPoint(x: frame.midX, y: frame.height / 2 - topInfoBar.size.height / 2)
+        
+        background.addChild(goalNode)
+        goalNode.position = CGPoint(x: frame.midX, y: topInfoBar.position.y - topInfoBar.size.height + 40)
+        goalNode.size.width = frame.width / 4
+        goalNode.size.height = frame.height / 12
+        goalNode.zPosition = 2
+        
+        background.addChild(topInfoBar)
+        topInfoBar.zPosition = 3
+        
+        background.addChild(goalPlayerNode)
+        goalPlayerNode.position = CGPoint(x: frame.midX, y: frame.midY - frame.height / 2 + 40)
+        goalPlayerNode.zRotation = CGFloat(Double.pi)
+        goalPlayerNode.size.width = frame.width * 3 / 4
+        goalPlayerNode.size.height = frame.height / 10
+        goalPlayerNode.zPosition = 4
+        
 //        firstSpriteNode.addChild(ballNode)
         //z urcuje poradie vo vykreslovani
 //        ballNode.zPosition = 1
@@ -32,15 +73,28 @@ class GameScene: SKScene {
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         //oramovanie displeja ako hranice
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
-        //priradenie fyzickeho tela pre loptu
-        ballNode.physicsBody = SKPhysicsBody(circleOfRadius: ballNode.size.width/2)
-//        textureNode.physicsBody!.allowsRotation = false
-        //restitution reprezentuje kolko energie sa uvolni pri kolizii max je 1.0
-        ballNode.physicsBody!.restitution = 1.0
+        
+        
+        shootBall()
         
         //nastavenie fyziky pre modry stvorec
 //        secondSpriteNode.physicsBody = SKPhysicsBody(rectangleOf: secondSpriteNode.size)
     }
+    
+    func nastavRychlost(kazdychSekund: Double) {
+        if timerBalls.isValid {
+            timerBalls = Timer.scheduledTimer(timeInterval: kazdychSekund, target: self, selector: Selector("shootBall"), userInfo: nil, repeats: true)
+        }else{
+            timerBalls.invalidate()
+            timerBalls = Timer.scheduledTimer(timeInterval: kazdychSekund, target: self, selector: Selector("shootBall"), userInfo: nil, repeats: true)
+        }
+    }
+    
+    func shootBall() {
+        ballNode.physicsBody!.applyImpulse(CGVector(dx: 40.0, dy: -500.0))
+        ballNode.position = CGPoint(x: frame.midX, y: frame.midY + frame.size.height/3)
+    }
+    
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         //pouzitie akcie aby sa presunul node
@@ -53,20 +107,42 @@ class GameScene: SKScene {
 //        }
         for touch in touches {
             let location = touch.location(in: self)
-            if ballNode.contains(location) {
+            if ballNode.contains(location) && location.y <= 0 {
                 print("hit")
-                let posunX = (ballNode.frame.midX - location.x)*15
+                var posunX = (ballNode.frame.midX - location.x)*15
                 var posunY = (ballNode.frame.midY - location.y)*15
+                print(" posX: \(posunX) posY: \(posunY)")
+                print(ballNode.physicsBody!.velocity)
+                let rychlost = abs(ballNode.physicsBody!.velocity.dx) + abs(ballNode.physicsBody!.velocity.dy)
+                print(rychlost)
+                
+
+                
+                if (ballNode.frame.midX - location.x) > 0 {
+                    posunX = (ballNode.frame.midX - location.x) + abs(ballNode.frame.midX - location.x) / (abs(ballNode.frame.midX - location.x) + abs(ballNode.frame.midY - location.y)) * rychlost
+                }else{
+                    posunX = (ballNode.frame.midX - location.x) - abs(ballNode.frame.midX - location.x) / (abs(ballNode.frame.midX - location.x) + abs(ballNode.frame.midY - location.y)) * rychlost
+                }
+                if (ballNode.frame.midY - location.y) > 0 {
+                    posunY = (ballNode.frame.midY - location.y) + abs(ballNode.frame.midY - location.y) / (abs(ballNode.frame.midX - location.x) + abs(ballNode.frame.midY - location.y)) * rychlost
+                }else{
+                    posunY = (ballNode.frame.midY - location.y) - abs(ballNode.frame.midY - location.y) / (abs(ballNode.frame.midX - location.x) + abs(ballNode.frame.midY - location.y)) * rychlost
+                }
+                posunX = posunX + posunX * 2 / 3
+                posunY = posunY + posunY * 2 / 3
+                print(" posX2: \(posunX) posY2: \(posunY)")
+                
+                ballNode.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
+
+                
 //                if location.y > textureNode.frame.midY {
 //                    posunY = (location.y - textureNode.frame.midY)*8
 //                }
-//                textureNode.physicsBody!.applyImpulse(CGVector(dx: Double.random(in: -100.0 ..< 100.0), dy: Double.random(in: -100.0 ..< 100.0)))
-                ballNode.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
             }else{
-                print("miss")
-                let posunX = -(ballNode.physicsBody!.velocity.dx)*3
-                var posunY = -(ballNode.physicsBody!.velocity.dy)*3
-                ballNode.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
+//                print(ballNode.physicsBody!.velocity)
+//                let posunX = -(ballNode.physicsBody!.velocity.dx)*3
+//                let posunY = -(ballNode.physicsBody!.velocity.dy)*3
+//                ballNode.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
             }
         }
         
@@ -99,5 +175,6 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+        
     }
 }

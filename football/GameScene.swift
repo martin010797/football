@@ -9,6 +9,16 @@ import SpriteKit
 
 let DEFAULT_WIDTH = 200.0
 let DEFAULT_HEIGHT = 200.0
+let BALL_CATEGORY: UInt32 = 1
+let GOAL_CATEGORY: UInt32 = 2
+let OUTSIDE_GOAL_CATEGORY: UInt32 = 4
+let NO_CATEGORY: UInt32 = 128
+let Y_COORD_DEFAULT_MIN_SPEED:Double = -500
+let Y_COORD_DEFAULT_MAX_SPEED:Double = -700
+let X_COORD_DEFAULT_MIN_SPEED:Double = -200
+let X_COORD_DEFAULT_MAX_SPEED:Double = 200
+let DEFAULT_NUMBER_OF_LIVES = 3
+let DEFAULT_SCORE = 0
 
 class GameScene: SKScene {
     
@@ -17,6 +27,17 @@ class GameScene: SKScene {
     var balls :[SKSpriteNode] = [SKSpriteNode]()
     var timerBalls = Timer()
     
+    var yCoordMinSpeed = Y_COORD_DEFAULT_MIN_SPEED
+    var yCoordMaxSpeed = Y_COORD_DEFAULT_MAX_SPEED
+    var xCoordMinSpeed = X_COORD_DEFAULT_MIN_SPEED
+    var xCoordMaxSpeed = X_COORD_DEFAULT_MAX_SPEED
+    
+    var numberOfLives = DEFAULT_NUMBER_OF_LIVES
+    var score = DEFAULT_SCORE
+    
+    let livesLabelNode = SKLabelNode(fontNamed: "Verdana-Bold")
+    let scoreLabelNode = SKLabelNode(fontNamed: "Verdana-Bold")
+    
     let ballNode = SKSpriteNode(imageNamed: "ball")
     let background = SKSpriteNode(imageNamed: "background")
     let topInfoBar = SKSpriteNode(color: UIColor.systemGreen, size: CGSize(width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT))
@@ -24,21 +45,13 @@ class GameScene: SKScene {
     let goalPlayerNode = SKSpriteNode(imageNamed: "goal")
     
     override func didMove(to view: SKView) {
-//        addChild(firstSpriteNode)
-//        firstSpriteNode.position = CGPoint(x: frame.midX, y: frame.midY)
+        
 //        firstSpriteNode.anchorPoint = CGPoint.zero
         background.position = CGPoint(x: frame.midX, y: frame.midY)
         addChild(background)
         background.zPosition = -1
-        
-        background.addChild(ballNode)
-        ballNode.zPosition = 1
-        ballNode.size = CGSize(width: 150.0, height: 150.0)
-        //priradenie fyzickeho tela pre loptu
-        ballNode.physicsBody = SKPhysicsBody(circleOfRadius: ballNode.size.width/2)
-//        textureNode.physicsBody!.allowsRotation = false
-        //restitution reprezentuje kolko energie sa uvolni pri kolizii max je 1.0
-        ballNode.physicsBody!.restitution = 1.0
+
+        addBall()
         
         topInfoBar.size.width = frame.width
         topInfoBar.size.height = frame.height / 10
@@ -60,6 +73,25 @@ class GameScene: SKScene {
         goalPlayerNode.size.height = frame.height / 10
         goalPlayerNode.zPosition = 4
         
+        livesLabelNode.text = "❤️ " + String(numberOfLives)
+        livesLabelNode.fontColor = UIColor.black
+        livesLabelNode.fontSize = 40
+        livesLabelNode.zPosition = 5
+        livesLabelNode.horizontalAlignmentMode = .left
+        livesLabelNode.verticalAlignmentMode = .top
+        livesLabelNode.position = CGPoint(x: frame.midX - frame.size.width * 4 / 10, y: frame.midY - 10)
+        topInfoBar.addChild(livesLabelNode)
+        
+        scoreLabelNode.text = "Skóre: " + String(score)
+        scoreLabelNode.fontColor = UIColor.black
+        scoreLabelNode.fontSize = 40
+        scoreLabelNode.zPosition = 6
+        scoreLabelNode.horizontalAlignmentMode = .right
+        scoreLabelNode.verticalAlignmentMode = .top
+        scoreLabelNode.position = CGPoint(x: frame.midX + frame.size.width * 4 / 10, y: frame.midY - 10)
+        topInfoBar.addChild(scoreLabelNode)
+        
+        
 //        firstSpriteNode.addChild(ballNode)
         //z urcuje poradie vo vykreslovani
 //        ballNode.zPosition = 1
@@ -74,8 +106,9 @@ class GameScene: SKScene {
         //oramovanie displeja ako hranice
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         
+        nastavRychlost(kazdychSekund: 5)
         
-        shootBall()
+//        shootBall()
         
         //nastavenie fyziky pre modry stvorec
 //        secondSpriteNode.physicsBody = SKPhysicsBody(rectangleOf: secondSpriteNode.size)
@@ -86,13 +119,29 @@ class GameScene: SKScene {
             timerBalls = Timer.scheduledTimer(timeInterval: kazdychSekund, target: self, selector: Selector("shootBall"), userInfo: nil, repeats: true)
         }else{
             timerBalls.invalidate()
-            timerBalls = Timer.scheduledTimer(timeInterval: kazdychSekund, target: self, selector: Selector("shootBall"), userInfo: nil, repeats: true)
+            timerBalls = Timer.scheduledTimer(timeInterval: kazdychSekund, target: self, selector: Selector("addBall"), userInfo: nil, repeats: true)
         }
     }
     
-    func shootBall() {
-        ballNode.physicsBody!.applyImpulse(CGVector(dx: 40.0, dy: -500.0))
-        ballNode.position = CGPoint(x: frame.midX, y: frame.midY + frame.size.height/3)
+    @objc func addBall() {
+        let ball = SKSpriteNode(imageNamed: "ball")
+        background.addChild(ball)
+        ball.zPosition = 1
+        ball.size = CGSize(width: 150.0, height: 150.0)
+        ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width/2)
+        ball.physicsBody!.categoryBitMask = BALL_CATEGORY
+        ball.physicsBody!.collisionBitMask = NO_CATEGORY
+        ball.physicsBody!.restitution = 1.0
+        ball.userData = NSMutableDictionary()
+        ball.userData?.setValue(false, forKey: "hitted")
+        balls.append(ball)
+
+        let randomDx = Double.random(in: xCoordMinSpeed ..< xCoordMaxSpeed)
+        let randomDy = Double.random(in: yCoordMaxSpeed ..< yCoordMinSpeed)
+        ball.physicsBody!.applyImpulse(CGVector(dx: randomDx, dy: randomDy))
+        
+        let randomXPosition = Double.random(in: (Double(frame.midX) - Double(frame.size.width) * 2 / 5) ..< (Double(frame.midX) + Double(frame.size.width) * 2 / 5))
+        ball.position = CGPoint(x: CGFloat(randomXPosition), y: frame.midY + frame.size.height * 1/4)
     }
     
     
@@ -107,43 +156,42 @@ class GameScene: SKScene {
 //        }
         for touch in touches {
             let location = touch.location(in: self)
-            if ballNode.contains(location) && location.y <= 0 {
-                print("hit")
-                var posunX = (ballNode.frame.midX - location.x)*15
-                var posunY = (ballNode.frame.midY - location.y)*15
-                print(" posX: \(posunX) posY: \(posunY)")
-                print(ballNode.physicsBody!.velocity)
-                let rychlost = abs(ballNode.physicsBody!.velocity.dx) + abs(ballNode.physicsBody!.velocity.dy)
-                print(rychlost)
-                
-
-                
-                if (ballNode.frame.midX - location.x) > 0 {
-                    posunX = (ballNode.frame.midX - location.x) + abs(ballNode.frame.midX - location.x) / (abs(ballNode.frame.midX - location.x) + abs(ballNode.frame.midY - location.y)) * rychlost
+            for b in balls {
+                if b.contains(location) && location.y <= 0 {
+                    print("hit")
+                    var posunX = (b.frame.midX - location.x)*15
+                    var posunY = (b.frame.midY - location.y)*15
+                    print(" posX: \(posunX) posY: \(posunY)")
+                    print(b.physicsBody!.velocity)
+                    let rychlost = abs(b.physicsBody!.velocity.dx) + abs(b.physicsBody!.velocity.dy)
+                    print(rychlost)
+                    
+                    if (b.frame.midX - location.x) > 0 {
+                        posunX = (b.frame.midX - location.x) + abs(b.frame.midX - location.x) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
+                    }else{
+                        posunX = (b.frame.midX - location.x) - abs(b.frame.midX - location.x) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
+                    }
+                    if (b.frame.midY - location.y) > 0 {
+                        posunY = (b.frame.midY - location.y) + abs(b.frame.midY - location.y) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
+                    }else{
+                        posunY = (b.frame.midY - location.y) - abs(b.frame.midY - location.y) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
+                    }
+                    posunX = posunX + posunX * 2 / 3
+                    posunY = posunY + posunY * 2 / 3
+                    print(" posX2: \(posunX) posY2: \(posunY)")
+                    
+                    b.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
+                    b.userData?.setValue(true, forKey: "hitted")
+    //                if location.y > textureNode.frame.midY {
+    //                    posunY = (location.y - textureNode.frame.midY)*8
+    //                }
                 }else{
-                    posunX = (ballNode.frame.midX - location.x) - abs(ballNode.frame.midX - location.x) / (abs(ballNode.frame.midX - location.x) + abs(ballNode.frame.midY - location.y)) * rychlost
+    //                let posunX = -(ballNode.physicsBody!.velocity.dx)*3
+    //                let posunY = -(ballNode.physicsBody!.velocity.dy)*3
+    //                ballNode.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
                 }
-                if (ballNode.frame.midY - location.y) > 0 {
-                    posunY = (ballNode.frame.midY - location.y) + abs(ballNode.frame.midY - location.y) / (abs(ballNode.frame.midX - location.x) + abs(ballNode.frame.midY - location.y)) * rychlost
-                }else{
-                    posunY = (ballNode.frame.midY - location.y) - abs(ballNode.frame.midY - location.y) / (abs(ballNode.frame.midX - location.x) + abs(ballNode.frame.midY - location.y)) * rychlost
-                }
-                posunX = posunX + posunX * 2 / 3
-                posunY = posunY + posunY * 2 / 3
-                print(" posX2: \(posunX) posY2: \(posunY)")
-                
-                ballNode.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
-
-                
-//                if location.y > textureNode.frame.midY {
-//                    posunY = (location.y - textureNode.frame.midY)*8
-//                }
-            }else{
-//                print(ballNode.physicsBody!.velocity)
-//                let posunX = -(ballNode.physicsBody!.velocity.dx)*3
-//                let posunY = -(ballNode.physicsBody!.velocity.dy)*3
-//                ballNode.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
             }
+            
         }
         
 //        textureNode.physicsBody!.applyImpulse(CGVector(dx: -100.0, dy: -2.0))
@@ -175,6 +223,50 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        
+        checkGoal()
+        checkCrossinngHalf()
+    }
+    
+    func checkCrossinngHalf() {
+        for ball in balls {
+            if (ball.userData!.value(forKey: "hitted") != nil) {
+                let value = ball.userData!.value(forKey: "hitted") as? Bool ?? false
+                if value && (ball.position.y > frame.midY + ball.size.height / 2) {
+                    score += 1
+                    scoreLabelNode.text = "Skóre: " + String(score)
+                    ball.userData!.setValue(false, forKey: "hitted")
+                }
+            }
+        }
+    }
+    
+    func removeBall(ball: SKSpriteNode, index: Int) {
+        ball.removeFromParent()
+        balls.remove(at: index)
+    }
+    
+    func checkGoal() {
+        for (index, ball) in balls.enumerated() {
+            //removing stuck balls
+            if (abs(ball.physicsBody!.velocity.dx) + abs(ball.physicsBody!.velocity.dy)) < 300 {
+                removeBall(ball: ball, index: index)
+            }
+            if ball.position.y < (frame.midY - frame.size.height * 4 / 10) {
+                removeBall(ball: ball, index: index)
+                print("hrac dostal gol")
+                numberOfLives -= 1
+                livesLabelNode.text = "❤️ " + String(numberOfLives)
+            }else if ball.position.y > (frame.midY + frame.size.height * 30 / 100) {
+                if ball.position.x > (frame.midX - frame.size.width / 8) && ball.position.x < (frame.midX + frame.size.width / 8) {
+                    score += 3
+                    scoreLabelNode.text = "Skóre: " + String(score)
+                    print("GOL!")
+                }else{
+                    print("Mimo brany")
+                }
+                removeBall(ball: ball, index: index)
+            }
+            
+        }
     }
 }

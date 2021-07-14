@@ -30,6 +30,8 @@ let LEVEL_8_BALLS_COUNT = 50
 let LEVEL_9_BALLS_COUNT = 70
 let LEVEL_10_BALLS_COUNT = 100
 
+let MAX_COMBO = 4
+
 
 class GameScene: SKScene {
     
@@ -50,20 +52,21 @@ class GameScene: SKScene {
     let livesLabelNode = SKLabelNode(fontNamed: "Verdana-Bold")
     let scoreLabelNode = SKLabelNode(fontNamed: "Verdana-Bold")
     
+    var countdownLabel = SKLabelNode(fontNamed: "Verdana-Bold")
+    var countdown = 0
+    
     let ballNode = SKSpriteNode(imageNamed: "ball")
     let background = SKSpriteNode(imageNamed: "background")
     let topInfoBar = SKSpriteNode(color: UIColor.systemGreen, size: CGSize(width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT))
     let goalNode = SKSpriteNode(imageNamed: "goal")
     let goalPlayerNode = SKSpriteNode(imageNamed: "goal")
     
+    var comboGoals = 0
+    
     override func didMove(to view: SKView) {
-        
-//        firstSpriteNode.anchorPoint = CGPoint.zero
         background.position = CGPoint(x: frame.midX, y: frame.midY)
         addChild(background)
         background.zPosition = -1
-
-        addBall()
         
         topInfoBar.size.width = frame.width
         topInfoBar.size.height = frame.height / 10
@@ -103,28 +106,42 @@ class GameScene: SKScene {
         scoreLabelNode.position = CGPoint(x: frame.midX + frame.size.width * 4 / 10, y: frame.midY - 10)
         topInfoBar.addChild(scoreLabelNode)
         
-        
-//        firstSpriteNode.addChild(ballNode)
-        //z urcuje poradie vo vykreslovani
-//        ballNode.zPosition = 1
-//        firstSpriteNode.addChild(secondSpriteNode)
-//        secondSpriteNode.zPosition = 2
-//        secondSpriteNode.position = CGPoint(x: firstSpriteNode.size.width/2, y: firstSpriteNode.size.height/2)
-        
-        //Fyzika pre loptu
-        //gravitacia po xovej a yovej osi. na zemi je skoro -10
-//        physicsWorld.gravity = CGVector(dx: -1.0, dy: -2.0)
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
-        //oramovanie displeja ako hranice
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         
-        nastavRychlost(kazdychSekund: 4)
-        
-//        shootBall()
-        
-        //nastavenie fyziky pre modry stvorec
-//        secondSpriteNode.physicsBody = SKPhysicsBody(rectangleOf: secondSpriteNode.size)
+        self.view?.isPaused = true
     }
+    
+    func startGame(count: Int) {
+        self.view?.isPaused = false
+        countdownLabel.position = CGPoint(x: frame.midX, y: frame.midY + 30)
+        countdownLabel.fontColor = SKColor.black
+        countdownLabel.fontSize = 140
+        countdownLabel.text = "\(count)"
+        countdown = count
+        addChild(countdownLabel)
+
+        let counterDecrement = SKAction.sequence([SKAction.wait(forDuration: 1.0), SKAction.run(countdownAction)])
+        run(SKAction.sequence([SKAction.repeat(counterDecrement, count: count), SKAction.run(endCountdown)]))
+    }
+    
+    func countdownAction() {
+        countdown -= 1
+        countdownLabel.text = "\(countdown)"
+    }
+
+    func endCountdown() {
+        countdownLabel.removeFromParent()
+        nastavRychlost(kazdychSekund: 4)
+        addBall()
+    }
+    
+//    func startGame() {
+//        countdown(count: 3)
+//        self.view?.isPaused = false
+//        nastavRychlost(kazdychSekund: 4)
+//        addBall()
+//    }
     
     func nastavRychlost(kazdychSekund: Double) {
         if timerBalls.isValid {
@@ -299,9 +316,21 @@ class GameScene: SKScene {
                     score += 1
                     scoreLabelNode.text = "Skóre: " + String(score)
                     ball.userData!.setValue(false, forKey: "hitted")
+                    
+                    scoreLabel(node: ball, value: 1)
                 }
             }
         }
+    }
+    
+    func scoreLabel(node: SKSpriteNode, value: Int) {
+        let scoreHalfCrossedLabel = SKLabelNode(fontNamed: "Verdana-Bold")
+        scoreHalfCrossedLabel.position = node.position
+        scoreHalfCrossedLabel.fontColor = UIColor.blue
+        scoreHalfCrossedLabel.fontSize = 35
+        scoreHalfCrossedLabel.text = "+"+String(value)
+        addChild(scoreHalfCrossedLabel)
+        scoreHalfCrossedLabel.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), SKAction.fadeOut(withDuration: 0.5), SKAction.removeFromParent()]) )
     }
     
     func removeBall(ball: SKSpriteNode, index: Int) {
@@ -324,16 +353,20 @@ class GameScene: SKScene {
                 livesLabelNode.text = "❤️ " + String(numberOfLives)
             }else if ball.position.y > (frame.midY + frame.size.height * 30 / 100) {
                 if ball.position.x > (frame.midX - frame.size.width / 8) && ball.position.x < (frame.midX + frame.size.width / 8) {
-                    score += 3
-                    scoreLabelNode.text = "Skóre: " + String(score)
-                    
                     if let sparks = SKEmitterNode(fileNamed: "Spark") {
                         sparks.position = ball.position
                         addChild(sparks)
+                        sparks.run(SKAction.sequence([SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
                     }
-                    
+                    if comboGoals < MAX_COMBO {
+                        comboGoals += 1
+                    }
+                    score = score + comboGoals * 3
+                    scoreLabelNode.text = "Skóre: " + String(score)
+                    scoreLabel(node: ball, value: comboGoals * 3)
                     print("GOL!")
                 }else{
+                    comboGoals = 0
                     print("Mimo brany")
                 }
                 removeBall(ball: ball, index: index)

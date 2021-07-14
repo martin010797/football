@@ -1,24 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="football" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <connections>
+                        <segue destination="DVE-Mu-bna" kind="show" identifier="showPopup" id="Akx-rT-bxz"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="35" y="68"/>
+        </scene>
+        <!--Popup View Controller-->
+        <scene sceneID="dTV-eg-mxf">
+            <objects>
+                <viewController id="DVE-Mu-bna" customClass="PopupViewController" customModule="football" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZW0-jl-N5F">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eO7-0B-rSr">
+                                <rect key="frame" x="40" y="198" width="334" height="550"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eag-m8-xhC">
+                                        <rect key="frame" x="78" y="460" width="178" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemTealColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="M2z-di-Da9"/>
+                                            <constraint firstAttribute="width" constant="178" id="Wzs-nj-x7v"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                        <state key="normal" title="Rozumiem">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="startGame:" destination="DVE-Mu-bna" eventType="touchUpInside" id="sri-iQ-XoS"/>
+                                        </connections>
+                                    </button>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5Hm-cP-XQ5">
+                                        <rect key="frame" x="8" y="8" width="318" height="320"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="320" id="PbY-Uu-1U2"/>
+                                        </constraints>
+                                        <string key="text">Zabráňte gólom ťuknutím na prichádzajúce lopty. Za odstrelenie cez polovicu ihriska je 1 bod a za vstrelenie gólu 3 body. Vstrelené góly hneď po sebe zvyšujú kombo až do výšky štyri, čím sa prenásobujú 3 body za gól. Napríklad ak vstrelíte 3 góly po sebe tak za tretí gól bude 9 bodov(3 x 3). Začína sa s tromi životmi. Ďalšie životy je možné získať vstrelením gólu zlatou loptou.</string>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray3Color"/>
+                                <constraints>
+                                    <constraint firstItem="5Hm-cP-XQ5" firstAttribute="leading" secondItem="eO7-0B-rSr" secondAttribute="leading" constant="8" id="3kQ-bs-cWm"/>
+                                    <constraint firstAttribute="height" constant="550" id="6T5-JF-w1W"/>
+                                    <constraint firstAttribute="bottom" secondItem="Eag-m8-xhC" secondAttribute="bottom" constant="40" id="FfI-KJ-Ecw"/>
+                                    <constraint firstItem="Eag-m8-xhC" firstAttribute="centerX" secondItem="eO7-0B-rSr" secondAttribute="centerX" id="ewQ-8I-qZs"/>
+                                    <constraint firstItem="5Hm-cP-XQ5" firstAttribute="top" secondItem="eO7-0B-rSr" secondAttribute="top" constant="8" id="rIA-sk-XM6"/>
+                                    <constraint firstAttribute="trailing" secondItem="5Hm-cP-XQ5" secondAttribute="trailing" constant="8" id="w3U-jQ-OWh"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="mUS-Xp-Wi3"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="eO7-0B-rSr" firstAttribute="centerX" secondItem="ZW0-jl-N5F" secondAttribute="centerX" id="Syr-lV-dkn"/>
+                            <constraint firstItem="mUS-Xp-Wi3" firstAttribute="trailing" secondItem="eO7-0B-rSr" secondAttribute="trailing" constant="40" id="VzZ-Id-zB0"/>
+                            <constraint firstItem="mUS-Xp-Wi3" firstAttribute="bottom" secondItem="eO7-0B-rSr" secondAttribute="bottom" constant="60" id="qDb-AI-I9N"/>
+                            <constraint firstItem="eO7-0B-rSr" firstAttribute="leading" secondItem="mUS-Xp-Wi3" secondAttribute="leading" constant="40" id="vDl-MV-qde"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="bOK-Um-n2k"/>
+                    <connections>
+                        <outlet property="instructionButton" destination="Eag-m8-xhC" id="cTr-dp-41e"/>
+                        <outlet property="instructionsTextView" destination="5Hm-cP-XQ5" id="SNe-EJ-XLd"/>
+                        <outlet property="instructionsView" destination="eO7-0B-rSr" id="QxF-cO-UxO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rte-qd-NOv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="857.97101449275374" y="67.633928571428569"/>
         </scene>
     </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray3Color">
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemTealColor">
+            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
 </document>

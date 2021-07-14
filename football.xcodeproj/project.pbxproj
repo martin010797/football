@@ -14,6 +14,7 @@
 		1E97C7DC269865080044F409 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E97C7DB269865080044F409 /* GameViewController.swift */; };
 		1E97C7DF269865080044F409 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E97C7DD269865080044F409 /* Main.storyboard */; };
 		1E97C7E12698650B0044F409 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E97C7E02698650B0044F409 /* Assets.xcassets */; };
+		1ED77B9A269EDC82008583E6 /* Spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1ED77B99269EDC81008583E6 /* Spark.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		1E97C7DE269865080044F409 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1E97C7E02698650B0044F409 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1E97C7E22698650B0044F409 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1ED77B99269EDC81008583E6 /* Spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Spark.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				1E97C7DD269865080044F409 /* Main.storyboard */,
 				1E97C7E02698650B0044F409 /* Assets.xcassets */,
 				1E97C7E22698650B0044F409 /* Info.plist */,
+				1ED77B99269EDC81008583E6 /* Spark.sks */,
 			);
 			path = football;
 			sourceTree = "<group>";
@@ -128,6 +131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E97C7DF269865080044F409 /* Main.storyboard in Resources */,
+				1ED77B9A269EDC82008583E6 /* Spark.sks in Resources */,
 				1E97C7D6269865080044F409 /* GameScene.sks in Resources */,
 				1E97C7E12698650B0044F409 /* Assets.xcassets in Resources */,
 				1E97C7D8269865080044F409 /* Actions.sks in Resources */,

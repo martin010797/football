@@ -20,18 +20,30 @@ let X_COORD_DEFAULT_MAX_SPEED:Double = 200
 let DEFAULT_NUMBER_OF_LIVES = 3
 let DEFAULT_SCORE = 0
 
+let LEVEL_2_BALLS_COUNT = 5
+let LEVEL_3_BALLS_COUNT = 10
+let LEVEL_4_BALLS_COUNT = 15
+let LEVEL_5_BALLS_COUNT = 20
+let LEVEL_6_BALLS_COUNT = 30
+let LEVEL_7_BALLS_COUNT = 40
+let LEVEL_8_BALLS_COUNT = 50
+let LEVEL_9_BALLS_COUNT = 70
+let LEVEL_10_BALLS_COUNT = 100
+
+
 class GameScene: SKScene {
     
 //    let firstSpriteNode = SKSpriteNode(color: UIColor.red, size: CGSize(width: 200.0, height: 200.0))
 //    let secondSpriteNode = SKSpriteNode(color: UIColor.blue, size: CGSize(width: 100.0, height: 100.0))
     var balls :[SKSpriteNode] = [SKSpriteNode]()
     var timerBalls = Timer()
+    var numberOfBallsShot = 0
     
     var yCoordMinSpeed = Y_COORD_DEFAULT_MIN_SPEED
     var yCoordMaxSpeed = Y_COORD_DEFAULT_MAX_SPEED
     var xCoordMinSpeed = X_COORD_DEFAULT_MIN_SPEED
     var xCoordMaxSpeed = X_COORD_DEFAULT_MAX_SPEED
-    
+        
     var numberOfLives = DEFAULT_NUMBER_OF_LIVES
     var score = DEFAULT_SCORE
     
@@ -106,7 +118,7 @@ class GameScene: SKScene {
         //oramovanie displeja ako hranice
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         
-        nastavRychlost(kazdychSekund: 5)
+        nastavRychlost(kazdychSekund: 4)
         
 //        shootBall()
         
@@ -116,12 +128,14 @@ class GameScene: SKScene {
     
     func nastavRychlost(kazdychSekund: Double) {
         if timerBalls.isValid {
-            timerBalls = Timer.scheduledTimer(timeInterval: kazdychSekund, target: self, selector: Selector("shootBall"), userInfo: nil, repeats: true)
-        }else{
             timerBalls.invalidate()
+            timerBalls = Timer.scheduledTimer(timeInterval: kazdychSekund, target: self, selector: Selector("addBall"), userInfo: nil, repeats: true)
+        }else{
+//            timerBalls.invalidate()
             timerBalls = Timer.scheduledTimer(timeInterval: kazdychSekund, target: self, selector: Selector("addBall"), userInfo: nil, repeats: true)
         }
     }
+
     
     @objc func addBall() {
         let ball = SKSpriteNode(imageNamed: "ball")
@@ -142,6 +156,56 @@ class GameScene: SKScene {
         
         let randomXPosition = Double.random(in: (Double(frame.midX) - Double(frame.size.width) * 2 / 5) ..< (Double(frame.midX) + Double(frame.size.width) * 2 / 5))
         ball.position = CGPoint(x: CGFloat(randomXPosition), y: frame.midY + frame.size.height * 1/4)
+        numberOfBallsShot += 1
+        changeDifficulty()
+    }
+    
+    func changeDifficulty() {
+        switch numberOfBallsShot {
+        case LEVEL_2_BALLS_COUNT:
+            yCoordMaxSpeed = -800
+            yCoordMinSpeed = -600
+            nastavRychlost(kazdychSekund: 3)
+            print("level 2")
+        case LEVEL_3_BALLS_COUNT:
+            yCoordMaxSpeed = -900
+            yCoordMinSpeed = -650
+            print("level 3")
+        case LEVEL_4_BALLS_COUNT:
+            yCoordMaxSpeed = -900
+            yCoordMinSpeed = -700
+            nastavRychlost(kazdychSekund: 2)
+            print("level 4")
+        case LEVEL_5_BALLS_COUNT:
+            yCoordMaxSpeed = -1000
+            yCoordMinSpeed = -750
+            nastavRychlost(kazdychSekund: 1.5)
+            print("level 5")
+        case LEVEL_6_BALLS_COUNT:
+            yCoordMaxSpeed = -1100
+            yCoordMinSpeed = -750
+            print("level 6")
+        case LEVEL_7_BALLS_COUNT:
+            yCoordMaxSpeed = -1150
+            yCoordMinSpeed = -750
+            nastavRychlost(kazdychSekund: 1)
+            print("level 7")
+        case LEVEL_8_BALLS_COUNT:
+            yCoordMaxSpeed = -1150
+            yCoordMinSpeed = -800
+            print("level 8")
+        case LEVEL_9_BALLS_COUNT:
+            yCoordMaxSpeed = -1250
+            yCoordMinSpeed = -800
+            nastavRychlost(kazdychSekund: 1)
+            print("level 9")
+        case LEVEL_10_BALLS_COUNT:
+            yCoordMaxSpeed = -1350
+            yCoordMinSpeed = -800
+            print("level 10")
+        default:
+            print("no change")
+        }
     }
     
     
@@ -241,8 +305,10 @@ class GameScene: SKScene {
     }
     
     func removeBall(ball: SKSpriteNode, index: Int) {
-        ball.removeFromParent()
-        balls.remove(at: index)
+        if index < balls.count{
+            ball.removeFromParent()
+            balls.remove(at: index)
+        }
     }
     
     func checkGoal() {
@@ -260,6 +326,12 @@ class GameScene: SKScene {
                 if ball.position.x > (frame.midX - frame.size.width / 8) && ball.position.x < (frame.midX + frame.size.width / 8) {
                     score += 3
                     scoreLabelNode.text = "Skóre: " + String(score)
+                    
+                    if let sparks = SKEmitterNode(fileNamed: "Spark") {
+                        sparks.position = ball.position
+                        addChild(sparks)
+                    }
+                    
                     print("GOL!")
                 }else{
                     print("Mimo brany")

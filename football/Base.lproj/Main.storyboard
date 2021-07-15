@@ -64,7 +64,7 @@
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemGray3Color"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="5Hm-cP-XQ5" firstAttribute="leading" secondItem="eO7-0B-rSr" secondAttribute="leading" constant="8" id="3kQ-bs-cWm"/>
                                     <constraint firstAttribute="height" constant="550" id="6T5-JF-w1W"/>
@@ -77,6 +77,7 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mUS-Xp-Wi3"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="eO7-0B-rSr" firstAttribute="centerX" secondItem="ZW0-jl-N5F" secondAttribute="centerX" id="Syr-lV-dkn"/>
                             <constraint firstItem="mUS-Xp-Wi3" firstAttribute="trailing" secondItem="eO7-0B-rSr" secondAttribute="trailing" constant="40" id="VzZ-Id-zB0"/>
@@ -99,9 +100,6 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray3Color">
-            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemTealColor">
             <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

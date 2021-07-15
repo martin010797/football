@@ -17,7 +17,7 @@ class PopupViewController: UIViewController {
         super.viewDidLoad()
         instructionButton.layer.cornerRadius = 10.0
         instructionsView.layer.cornerRadius = 10.0
-//        instructionsView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        instructionsView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
         // Do any additional setup after loading the view.
     }
     

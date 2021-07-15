@@ -155,26 +155,29 @@ class GameScene: SKScene {
 
     
     @objc func addBall() {
-        let ball = SKSpriteNode(imageNamed: "ball")
-        background.addChild(ball)
-        ball.zPosition = 1
-        ball.size = CGSize(width: 150.0, height: 150.0)
-        ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width/2)
-        ball.physicsBody!.categoryBitMask = BALL_CATEGORY
-        ball.physicsBody!.collisionBitMask = NO_CATEGORY
-        ball.physicsBody!.restitution = 1.0
-        ball.userData = NSMutableDictionary()
-        ball.userData?.setValue(false, forKey: "hitted")
-        balls.append(ball)
+        if numberOfBallsShot < LEVEL_7_BALLS_COUNT || (numberOfBallsShot >= LEVEL_7_BALLS_COUNT && (Int.random(in: 0 ..< 100)) < 80) {
+            let ball = SKSpriteNode(imageNamed: "ball")
+            background.addChild(ball)
+            ball.zPosition = 1
+            ball.size = CGSize(width: 150.0, height: 150.0)
+            ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width/2)
+            ball.physicsBody!.categoryBitMask = BALL_CATEGORY
+            ball.physicsBody!.collisionBitMask = NO_CATEGORY
+            ball.physicsBody!.restitution = 1.0
+            ball.userData = NSMutableDictionary()
+            ball.userData?.setValue(false, forKey: "hitted")
+            balls.append(ball)
 
-        let randomDx = Double.random(in: xCoordMinSpeed ..< xCoordMaxSpeed)
-        let randomDy = Double.random(in: yCoordMaxSpeed ..< yCoordMinSpeed)
-        ball.physicsBody!.applyImpulse(CGVector(dx: randomDx, dy: randomDy))
+            let randomDx = Double.random(in: xCoordMinSpeed ..< xCoordMaxSpeed)
+            let randomDy = Double.random(in: yCoordMaxSpeed ..< yCoordMinSpeed)
+            ball.physicsBody!.applyImpulse(CGVector(dx: randomDx, dy: randomDy))
+            
+            let randomXPosition = Double.random(in: (Double(frame.midX) - Double(frame.size.width) * 2 / 5) ..< (Double(frame.midX) + Double(frame.size.width) * 2 / 5))
+            ball.position = CGPoint(x: CGFloat(randomXPosition), y: frame.midY + frame.size.height * 1/4)
+            numberOfBallsShot += 1
+            changeDifficulty()
+        }
         
-        let randomXPosition = Double.random(in: (Double(frame.midX) - Double(frame.size.width) * 2 / 5) ..< (Double(frame.midX) + Double(frame.size.width) * 2 / 5))
-        ball.position = CGPoint(x: CGFloat(randomXPosition), y: frame.midY + frame.size.height * 1/4)
-        numberOfBallsShot += 1
-        changeDifficulty()
     }
     
     func changeDifficulty() {
@@ -214,7 +217,6 @@ class GameScene: SKScene {
         case LEVEL_9_BALLS_COUNT:
             yCoordMaxSpeed = -1250
             yCoordMinSpeed = -800
-            nastavRychlost(kazdychSekund: 1)
             print("level 9")
         case LEVEL_10_BALLS_COUNT:
             yCoordMaxSpeed = -1350

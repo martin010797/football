@@ -56,7 +56,7 @@ class GameScene: SKScene {
     var countdown = 0
     
     let ballNode = SKSpriteNode(imageNamed: "ball")
-    let background = SKSpriteNode(imageNamed: "background")
+    let background = SKSpriteNode(imageNamed: "background2")
     let topInfoBar = SKSpriteNode(color: UIColor.systemGreen, size: CGSize(width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT))
     let goalNode = SKSpriteNode(imageNamed: "goal")
     let goalPlayerNode = SKSpriteNode(imageNamed: "goal")

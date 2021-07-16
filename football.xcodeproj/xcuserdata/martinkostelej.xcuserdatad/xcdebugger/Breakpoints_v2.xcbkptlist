@@ -48,7 +48,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "323"
             endingLineNumber = "323"
-            landmarkName = "removeBall(ball:index:)"
+            landmarkName = "checkCrossinngHalf()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -80,7 +80,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "340"
             endingLineNumber = "340"
-            landmarkName = "checkGoal()"
+            landmarkName = "removeBall(ball:index:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

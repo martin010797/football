@@ -19,6 +19,7 @@ let X_COORD_DEFAULT_MIN_SPEED:Double = -200
 let X_COORD_DEFAULT_MAX_SPEED:Double = 200
 let DEFAULT_NUMBER_OF_LIVES = 3
 let DEFAULT_SCORE = 0
+let CLASSIC_BALL_PROBABILITY_PERCENTAGE = 70
 
 let LEVEL_2_BALLS_COUNT = 5
 let LEVEL_3_BALLS_COUNT = 10
@@ -156,28 +157,43 @@ class GameScene: SKScene {
     
     @objc func addBall() {
         if numberOfBallsShot < LEVEL_7_BALLS_COUNT || (numberOfBallsShot >= LEVEL_7_BALLS_COUNT && (Int.random(in: 0 ..< 100)) < 80) {
-            let ball = SKSpriteNode(imageNamed: "ball")
-            background.addChild(ball)
-            ball.zPosition = 1
-            ball.size = CGSize(width: 150.0, height: 150.0)
-            ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width/2)
-            ball.physicsBody!.categoryBitMask = BALL_CATEGORY
-            ball.physicsBody!.collisionBitMask = NO_CATEGORY
-            ball.physicsBody!.restitution = 1.0
-            ball.userData = NSMutableDictionary()
-            ball.userData?.setValue(false, forKey: "hitted")
-            balls.append(ball)
-
-            let randomDx = Double.random(in: xCoordMinSpeed ..< xCoordMaxSpeed)
-            let randomDy = Double.random(in: yCoordMaxSpeed ..< yCoordMinSpeed)
-            ball.physicsBody!.applyImpulse(CGVector(dx: randomDx, dy: randomDy))
             
-            let randomXPosition = Double.random(in: (Double(frame.midX) - Double(frame.size.width) * 2 / 5) ..< (Double(frame.midX) + Double(frame.size.width) * 2 / 5))
-            ball.position = CGPoint(x: CGFloat(randomXPosition), y: frame.midY + frame.size.height * 1/4)
+            if Int.random(in: 0 ..< 100) <= CLASSIC_BALL_PROBABILITY_PERCENTAGE {
+                ballCreation(imageName: "ball")
+            }else{
+                ballCreation(imageName: "golden_ball")
+            }
+            
             numberOfBallsShot += 1
             changeDifficulty()
         }
+    }
+    
+    func ballCreation(imageName: String){
+        let ball = SKSpriteNode(imageNamed: imageName)
+        background.addChild(ball)
+        ball.zPosition = 1
+        ball.size = CGSize(width: 150.0, height: 150.0)
+        ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width/2)
+        ball.physicsBody!.categoryBitMask = BALL_CATEGORY
+        ball.physicsBody!.collisionBitMask = NO_CATEGORY
+        ball.physicsBody!.restitution = 1.0
+        ball.userData = NSMutableDictionary()
+        if imageName == "ball" {
+            ball.userData?.setValue(false, forKey: "golden")
+        }else{
+            ball.userData?.setValue(true, forKey: "golden")
+        }
+        ball.userData?.setValue(false, forKey: "hitted")
+        balls.append(ball)
+
+        let randomDx = Double.random(in: xCoordMinSpeed ..< xCoordMaxSpeed)
+        let randomDy = Double.random(in: yCoordMaxSpeed ..< yCoordMinSpeed)
+        ball.physicsBody!.applyImpulse(CGVector(dx: randomDx, dy: randomDy))
         
+        let randomXPosition = Double.random(in: (Double(frame.midX) - Double(frame.size.width) * 2 / 5) ..< (Double(frame.midX) + Double(frame.size.width) * 2 / 5))
+        ball.position = CGPoint(x: CGFloat(randomXPosition), y: frame.midY + frame.size.height * 1/4)
+
     }
     
     func changeDifficulty() {
@@ -319,20 +335,24 @@ class GameScene: SKScene {
                     scoreLabelNode.text = "Skóre: " + String(score)
                     ball.userData!.setValue(false, forKey: "hitted")
                     
-                    scoreLabel(node: ball, value: 1)
+                    scoreLabel(node: ball, value: String(1))
                 }
             }
         }
     }
     
-    func scoreLabel(node: SKSpriteNode, value: Int) {
-        let scoreHalfCrossedLabel = SKLabelNode(fontNamed: "Verdana-Bold")
-        scoreHalfCrossedLabel.position = node.position
-        scoreHalfCrossedLabel.fontColor = UIColor.blue
-        scoreHalfCrossedLabel.fontSize = 35
-        scoreHalfCrossedLabel.text = "+"+String(value)
-        addChild(scoreHalfCrossedLabel)
-        scoreHalfCrossedLabel.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), SKAction.fadeOut(withDuration: 0.5), SKAction.removeFromParent()]) )
+    func scoreLabel(node: SKSpriteNode, value: String) {
+        let scoreLabel = SKLabelNode(fontNamed: "Verdana-Bold")
+        scoreLabel.position = node.position
+        scoreLabel.fontColor = UIColor.blue
+        if value == "❤️" {
+            scoreLabel.position.y -= 50
+            scoreLabel.fontColor = UIColor.red
+        }
+        scoreLabel.fontSize = 35
+        scoreLabel.text = "+"+value
+        addChild(scoreLabel)
+        scoreLabel.run(SKAction.sequence([SKAction.wait(forDuration: 0.5), SKAction.fadeOut(withDuration: 0.5), SKAction.removeFromParent()]) )
     }
     
     func removeBall(ball: SKSpriteNode, index: Int) {
@@ -365,7 +385,15 @@ class GameScene: SKScene {
                     }
                     score = score + comboGoals * 3
                     scoreLabelNode.text = "Skóre: " + String(score)
-                    scoreLabel(node: ball, value: comboGoals * 3)
+                    scoreLabel(node: ball, value: String(comboGoals * 3))
+                    if (ball.userData!.value(forKey: "golden") != nil) {
+                        let value = ball.userData!.value(forKey: "golden") as? Bool ?? false
+                        if value{
+                            numberOfLives += 1
+                            livesLabelNode.text = "❤️ " + String(numberOfLives)
+                            scoreLabel(node: ball, value: "❤️")
+                        }
+                    }
                     print("GOL!")
                 }else{
                     comboGoals = 0

@@ -12,12 +12,15 @@ class PopupViewController: UIViewController {
     @IBOutlet weak var instructionButton: UIButton!
     @IBOutlet weak var instructionsTextView: UITextView!
     @IBOutlet weak var instructionsView: UIView!
+    @IBOutlet weak var startinImageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         instructionButton.layer.cornerRadius = 10.0
         instructionsView.layer.cornerRadius = 10.0
         instructionsView.backgroundColor = UIColor.black.withAlphaComponent(0.8)
+        
+        startinImageView.image = UIImage(named: "startingImage")
         // Do any additional setup after loading the view.
     }
     

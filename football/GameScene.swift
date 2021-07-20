@@ -41,6 +41,7 @@ class GameScene: SKScene {
     var balls :[SKSpriteNode] = [SKSpriteNode]()
     var timerBalls = Timer()
     var numberOfBallsShot = 0
+    var isGamePaused = false
     
     var yCoordMinSpeed = Y_COORD_DEFAULT_MIN_SPEED
     var yCoordMaxSpeed = Y_COORD_DEFAULT_MAX_SPEED
@@ -52,6 +53,7 @@ class GameScene: SKScene {
     
     let livesLabelNode = SKLabelNode(fontNamed: "Verdana-Bold")
     let scoreLabelNode = SKLabelNode(fontNamed: "Verdana-Bold")
+    let pauseLabelNode = SKLabelNode(fontNamed: "Verdana-Bold")
     
     var countdownLabel = SKLabelNode(fontNamed: "Verdana-Bold")
     var countdown = 0
@@ -68,6 +70,15 @@ class GameScene: SKScene {
         background.position = CGPoint(x: frame.midX, y: frame.midY)
         addChild(background)
         background.zPosition = -1
+        
+        pauseLabelNode.text = "Hra je pozastavená"
+        pauseLabelNode.fontColor = UIColor.black
+        pauseLabelNode.fontSize = 60
+        pauseLabelNode.horizontalAlignmentMode = .center
+        pauseLabelNode.verticalAlignmentMode = .center
+        scoreLabelNode.zPosition = 100
+        addChild(pauseLabelNode)
+        pauseLabelNode.isHidden = true
         
         topInfoBar.size.width = frame.width
         topInfoBar.size.height = frame.height / 10
@@ -110,6 +121,8 @@ class GameScene: SKScene {
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         
+        
+        
         self.view?.isPaused = true
     }
     
@@ -130,19 +143,64 @@ class GameScene: SKScene {
         countdown -= 1
         countdownLabel.text = "\(countdown)"
     }
-
+    
     func endCountdown() {
         countdownLabel.removeFromParent()
         nastavRychlost(kazdychSekund: 4)
         addBall()
     }
     
-//    func startGame() {
-//        countdown(count: 3)
-//        self.view?.isPaused = false
-//        nastavRychlost(kazdychSekund: 4)
-//        addBall()
-//    }
+    func pauseButtonePressed() {
+        if isGamePaused {
+            unpauseTheGame()
+        }else{
+            pauseTheGame()
+        }
+    }
+    
+    func pauseTheGame() {
+        pauseLabelNode.isHidden = false
+        isGamePaused = true
+        timerBalls.invalidate()
+        for ball in balls {
+            ball.isPaused = true
+        }
+        physicsWorld.speed = 0
+    }
+    
+    func unpauseTheGame() {
+        pauseLabelNode.isHidden = true
+        
+        countdownLabel.position = CGPoint(x: frame.midX, y: frame.midY + 30)
+        countdownLabel.fontColor = SKColor.black
+        countdownLabel.fontSize = 140
+        countdownLabel.text = "3"
+        countdown = 3
+        addChild(countdownLabel)
+
+        let counterDecrement = SKAction.sequence([SKAction.wait(forDuration: 1.0), SKAction.run(countdownAction)])
+        run(SKAction.sequence([SKAction.repeat(counterDecrement, count: 3), SKAction.run(endCountdownAfterPause)]))
+    }
+    
+    func endCountdownAfterPause() {
+        countdownLabel.removeFromParent()
+        for ball in balls {
+            ball.isPaused = false
+        }
+        if numberOfBallsShot < LEVEL_2_BALLS_COUNT{
+            nastavRychlost(kazdychSekund: 4)
+        }else if numberOfBallsShot < LEVEL_4_BALLS_COUNT{
+            nastavRychlost(kazdychSekund: 3)
+        }else if numberOfBallsShot < LEVEL_5_BALLS_COUNT{
+            nastavRychlost(kazdychSekund: 2)
+        }else if numberOfBallsShot < LEVEL_7_BALLS_COUNT{
+            nastavRychlost(kazdychSekund: 1.5)
+        }else{
+            nastavRychlost(kazdychSekund: 1)
+        }
+        physicsWorld.speed = 1
+        isGamePaused = false
+    }
     
     func nastavRychlost(kazdychSekund: Double) {
         if timerBalls.isValid {
@@ -245,54 +303,40 @@ class GameScene: SKScene {
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //pouzitie akcie aby sa presunul node
-        //len presunnutie
-//        textureNode.run(SKAction.move(to: CGPoint(x: firstSpriteNode.size.width, y: firstSpriteNode.size.height), duration: 2.0))
-        
-        //presunutie a ked je kompletnne tak vrati spat
-//        textureNode.run(SKAction.move(to: CGPoint(x: firstSpriteNode.size.width, y: firstSpriteNode.size.height), duration: 2.0)) {
-//            self.textureNode.position = CGPoint.zero
-//        }
-        for touch in touches {
-            let location = touch.location(in: self)
-            for b in balls {
-                if b.contains(location) && location.y <= 0 {
-                    print("hit")
-                    var posunX = (b.frame.midX - location.x)*15
-                    var posunY = (b.frame.midY - location.y)*15
-                    print(" posX: \(posunX) posY: \(posunY)")
-                    print(b.physicsBody!.velocity)
-                    let rychlost = abs(b.physicsBody!.velocity.dx) + abs(b.physicsBody!.velocity.dy)
-                    print(rychlost)
-                    
-                    if (b.frame.midX - location.x) > 0 {
-                        posunX = (b.frame.midX - location.x) + abs(b.frame.midX - location.x) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
-                    }else{
-                        posunX = (b.frame.midX - location.x) - abs(b.frame.midX - location.x) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
+        if !isGamePaused {
+            for touch in touches {
+                let location = touch.location(in: self)
+                for b in balls {
+                    if b.contains(location) && location.y <= 0 {
+                        print("hit")
+                        var posunX = (b.frame.midX - location.x)*15
+                        var posunY = (b.frame.midY - location.y)*15
+                        print(" posX: \(posunX) posY: \(posunY)")
+                        print(b.physicsBody!.velocity)
+                        let rychlost = abs(b.physicsBody!.velocity.dx) + abs(b.physicsBody!.velocity.dy)
+                        print(rychlost)
+                        
+                        if (b.frame.midX - location.x) > 0 {
+                            posunX = (b.frame.midX - location.x) + abs(b.frame.midX - location.x) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
+                        }else{
+                            posunX = (b.frame.midX - location.x) - abs(b.frame.midX - location.x) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
+                        }
+                        if (b.frame.midY - location.y) > 0 {
+                            posunY = (b.frame.midY - location.y) + abs(b.frame.midY - location.y) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
+                        }else{
+                            posunY = (b.frame.midY - location.y) - abs(b.frame.midY - location.y) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
+                        }
+                        posunX = posunX + posunX * 2 / 3
+                        posunY = posunY + posunY * 2 / 3
+                        print(" posX2: \(posunX) posY2: \(posunY)")
+                        
+                        b.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
+                        b.userData?.setValue(true, forKey: "hitted")
                     }
-                    if (b.frame.midY - location.y) > 0 {
-                        posunY = (b.frame.midY - location.y) + abs(b.frame.midY - location.y) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
-                    }else{
-                        posunY = (b.frame.midY - location.y) - abs(b.frame.midY - location.y) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
-                    }
-                    posunX = posunX + posunX * 2 / 3
-                    posunY = posunY + posunY * 2 / 3
-                    print(" posX2: \(posunX) posY2: \(posunY)")
-                    
-                    b.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
-                    b.userData?.setValue(true, forKey: "hitted")
-    //                if location.y > textureNode.frame.midY {
-    //                    posunY = (location.y - textureNode.frame.midY)*8
-    //                }
-                }else{
-    //                let posunX = -(ballNode.physicsBody!.velocity.dx)*3
-    //                let posunY = -(ballNode.physicsBody!.velocity.dy)*3
-    //                ballNode.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
                 }
+                
             }
-            
         }
-        
 //        textureNode.physicsBody!.applyImpulse(CGVector(dx: -100.0, dy: -2.0))
         
         //otacanie node

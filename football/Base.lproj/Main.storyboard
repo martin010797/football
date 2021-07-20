@@ -15,16 +15,37 @@
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="763-P8-S0R">
+                                <rect key="frame" x="374" y="94" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="30" id="9CU-nC-Dcl"/>
+                                    <constraint firstAttribute="height" constant="30" id="QC5-N0-A46"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" image="pause.rectangle.fill" catalog="system">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="pauseButtonPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="yKu-pK-iEC"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="4qk-I5-YsI" firstAttribute="trailing" secondItem="763-P8-S0R" secondAttribute="trailing" constant="10" id="Smn-hU-rpb"/>
+                            <constraint firstItem="763-P8-S0R" firstAttribute="top" secondItem="4qk-I5-YsI" secondAttribute="top" constant="50" id="ygp-uJ-8GX"/>
+                        </constraints>
                     </view>
                     <connections>
+                        <outlet property="pauseButton" destination="763-P8-S0R" id="osz-Ou-9ef"/>
                         <segue destination="DVE-Mu-bna" kind="show" identifier="showPopup" id="Akx-rT-bxz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="35" y="68"/>
+            <point key="canvasLocation" x="34.782608695652179" y="67.633928571428569"/>
         </scene>
         <!--Popup View Controller-->
         <scene sceneID="dTV-eg-mxf">
@@ -38,7 +59,7 @@
                                 <rect key="frame" x="40" y="198" width="334" height="550"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eag-m8-xhC">
-                                        <rect key="frame" x="78" y="460" width="178" height="50"/>
+                                        <rect key="frame" x="78" y="470" width="178" height="50"/>
                                         <color key="backgroundColor" systemColor="systemTealColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="M2z-di-Da9"/>
@@ -53,24 +74,34 @@
                                         </connections>
                                     </button>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5Hm-cP-XQ5">
-                                        <rect key="frame" x="8" y="8" width="318" height="320"/>
+                                        <rect key="frame" x="8" y="220" width="318" height="250"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="320" id="PbY-Uu-1U2"/>
+                                            <constraint firstAttribute="height" constant="250" id="PbY-Uu-1U2"/>
                                         </constraints>
                                         <string key="text">Zabráňte gólom ťuknutím na prichádzajúce lopty. Za odstrelenie cez polovicu ihriska je 1 bod a za vstrelenie gólu 3 body. Vstrelené góly hneď po sebe zvyšujú kombo až do výšky štyri, čím sa prenásobujú 3 body za gól. Napríklad ak vstrelíte 3 góly po sebe tak za tretí gól bude 9 bodov(3 x 3). Začína sa s tromi životmi. Ďalšie životy je možné získať vstrelením gólu zlatou loptou.</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IjS-XB-g51">
+                                        <rect key="frame" x="10" y="10" width="314" height="200"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="200" id="2LG-EM-Bca"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="IjS-XB-g51" secondAttribute="trailing" constant="10" id="3GK-xp-tKK"/>
                                     <constraint firstItem="5Hm-cP-XQ5" firstAttribute="leading" secondItem="eO7-0B-rSr" secondAttribute="leading" constant="8" id="3kQ-bs-cWm"/>
                                     <constraint firstAttribute="height" constant="550" id="6T5-JF-w1W"/>
-                                    <constraint firstAttribute="bottom" secondItem="Eag-m8-xhC" secondAttribute="bottom" constant="40" id="FfI-KJ-Ecw"/>
+                                    <constraint firstAttribute="bottom" secondItem="Eag-m8-xhC" secondAttribute="bottom" constant="30" id="FfI-KJ-Ecw"/>
+                                    <constraint firstItem="IjS-XB-g51" firstAttribute="top" secondItem="eO7-0B-rSr" secondAttribute="top" constant="10" id="Uig-Yy-zuk"/>
+                                    <constraint firstItem="5Hm-cP-XQ5" firstAttribute="top" secondItem="IjS-XB-g51" secondAttribute="bottom" constant="10" id="baE-23-Xpi"/>
+                                    <constraint firstItem="IjS-XB-g51" firstAttribute="centerX" secondItem="eO7-0B-rSr" secondAttribute="centerX" id="eBo-mz-iMz"/>
                                     <constraint firstItem="Eag-m8-xhC" firstAttribute="centerX" secondItem="eO7-0B-rSr" secondAttribute="centerX" id="ewQ-8I-qZs"/>
-                                    <constraint firstItem="5Hm-cP-XQ5" firstAttribute="top" secondItem="eO7-0B-rSr" secondAttribute="top" constant="8" id="rIA-sk-XM6"/>
+                                    <constraint firstItem="IjS-XB-g51" firstAttribute="leading" secondItem="eO7-0B-rSr" secondAttribute="leading" constant="10" id="mMs-RR-hJV"/>
                                     <constraint firstAttribute="trailing" secondItem="5Hm-cP-XQ5" secondAttribute="trailing" constant="8" id="w3U-jQ-OWh"/>
                                 </constraints>
                             </view>
@@ -79,7 +110,6 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="eO7-0B-rSr" firstAttribute="centerX" secondItem="ZW0-jl-N5F" secondAttribute="centerX" id="Syr-lV-dkn"/>
                             <constraint firstItem="mUS-Xp-Wi3" firstAttribute="trailing" secondItem="eO7-0B-rSr" secondAttribute="trailing" constant="40" id="VzZ-Id-zB0"/>
                             <constraint firstItem="mUS-Xp-Wi3" firstAttribute="bottom" secondItem="eO7-0B-rSr" secondAttribute="bottom" constant="60" id="qDb-AI-I9N"/>
                             <constraint firstItem="eO7-0B-rSr" firstAttribute="leading" secondItem="mUS-Xp-Wi3" secondAttribute="leading" constant="40" id="vDl-MV-qde"/>
@@ -90,6 +120,7 @@
                         <outlet property="instructionButton" destination="Eag-m8-xhC" id="cTr-dp-41e"/>
                         <outlet property="instructionsTextView" destination="5Hm-cP-XQ5" id="SNe-EJ-XLd"/>
                         <outlet property="instructionsView" destination="eO7-0B-rSr" id="QxF-cO-UxO"/>
+                        <outlet property="startinImageView" destination="IjS-XB-g51" id="kVx-MG-BXx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rte-qd-NOv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -98,6 +129,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="pause.rectangle.fill" catalog="system" width="128" height="93"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

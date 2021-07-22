@@ -12,22 +12,27 @@ class GameViewController: UIViewController {
     
     var gameScene:GameScene?
     var isPaused = false
+    var soundsTurnedOn = true
     
     var ignoreTimer = Timer()
     var ignorePauseButton = true
     @IBOutlet weak var pauseButton: UIButton!
+    @IBOutlet weak var soundButton: UIButton!
+    
     //    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameViewController.startGame), name: "myNotification", object: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
 //        pauseButton.tintColor = UIColor.black
         pauseButton.setImage(UIImage(named: "pauseButton"), for: .normal)
+        soundButton.setImage(UIImage(named: "soundimage"), for: .normal)
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
             if let scene = SKScene(fileNamed: "GameScene") {
                 // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
+//                scene.scaleMode = .aspectFill
+                scene.scaleMode = .fill
                 gameScene = scene as? GameScene
 //                gameScene?.startGame()
                 
@@ -59,6 +64,7 @@ class GameViewController: UIViewController {
         gameScene?.startGame(count: 3)
         ignoreTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: Selector("stopIgnoring"), userInfo: nil, repeats: false)
     }
+    
     @IBAction func pauseButtonPressed(_ sender: Any) {
         if !ignorePauseButton {
             if isPaused {
@@ -74,5 +80,16 @@ class GameViewController: UIViewController {
             }
             gameScene?.pauseButtonePressed()
         }
+    }
+    
+    @IBAction func soundButtonPressed(_ sender: Any) {
+        if soundsTurnedOn {
+            soundButton.setImage(UIImage(named: "noSound"), for: .normal)
+            soundsTurnedOn = false
+        }else{
+            soundButton.setImage(UIImage(named: "soundimage"), for: .normal)
+            soundsTurnedOn = true
+        }
+        gameScene?.soundsButtonePressed()
     }
 }

@@ -16,6 +16,12 @@
 		1E97C7E12698650B0044F409 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E97C7E02698650B0044F409 /* Assets.xcassets */; };
 		1ED77B9A269EDC82008583E6 /* Spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1ED77B99269EDC81008583E6 /* Spark.sks */; };
 		1ED77B9C269F40B0008583E6 /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED77B9B269F40B0008583E6 /* PopupViewController.swift */; };
+		1ED77B9E26A88EB0008583E6 /* ballHit.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1ED77B9D26A88EAF008583E6 /* ballHit.wav */; };
+		1ED77BA026A89005008583E6 /* celebration_goal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1ED77B9F26A89005008583E6 /* celebration_goal.mp3 */; };
+		1ED77BA526A894F5008583E6 /* extraLife.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1ED77BA426A894F5008583E6 /* extraLife.wav */; };
+		1ED77BA726A8951A008583E6 /* score.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1ED77BA626A8951A008583E6 /* score.mp3 */; };
+		1ED77BA926A957F2008583E6 /* gameOverSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1ED77BA826A957F2008583E6 /* gameOverSound.wav */; };
+		1ED77BAB26A958C0008583E6 /* lostLifeSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1ED77BAA26A958C0008583E6 /* lostLifeSound.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +36,12 @@
 		1E97C7E22698650B0044F409 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1ED77B99269EDC81008583E6 /* Spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Spark.sks; sourceTree = "<group>"; };
 		1ED77B9B269F40B0008583E6 /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
+		1ED77B9D26A88EAF008583E6 /* ballHit.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = ballHit.wav; path = football/sounds/ballHit.wav; sourceTree = SOURCE_ROOT; };
+		1ED77B9F26A89005008583E6 /* celebration_goal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = celebration_goal.mp3; path = football/sounds/celebration_goal.mp3; sourceTree = SOURCE_ROOT; };
+		1ED77BA426A894F5008583E6 /* extraLife.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = extraLife.wav; path = football/extraLife.wav; sourceTree = SOURCE_ROOT; };
+		1ED77BA626A8951A008583E6 /* score.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = score.mp3; path = football/score.mp3; sourceTree = SOURCE_ROOT; };
+		1ED77BA826A957F2008583E6 /* gameOverSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = gameOverSound.wav; path = football/gameOverSound.wav; sourceTree = SOURCE_ROOT; };
+		1ED77BAA26A958C0008583E6 /* lostLifeSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = lostLifeSound.wav; path = football/lostLifeSound.wav; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,8 +84,22 @@
 				1E97C7E02698650B0044F409 /* Assets.xcassets */,
 				1E97C7E22698650B0044F409 /* Info.plist */,
 				1ED77B99269EDC81008583E6 /* Spark.sks */,
+				1ED77BA126A891B2008583E6 /* sounds */,
 			);
 			path = football;
+			sourceTree = "<group>";
+		};
+		1ED77BA126A891B2008583E6 /* sounds */ = {
+			isa = PBXGroup;
+			children = (
+				1ED77BA826A957F2008583E6 /* gameOverSound.wav */,
+				1ED77BAA26A958C0008583E6 /* lostLifeSound.wav */,
+				1ED77BA626A8951A008583E6 /* score.mp3 */,
+				1ED77B9D26A88EAF008583E6 /* ballHit.wav */,
+				1ED77BA426A894F5008583E6 /* extraLife.wav */,
+				1ED77B9F26A89005008583E6 /* celebration_goal.mp3 */,
+			);
+			path = sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -133,9 +159,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ED77BA026A89005008583E6 /* celebration_goal.mp3 in Resources */,
+				1ED77BA726A8951A008583E6 /* score.mp3 in Resources */,
 				1E97C7DF269865080044F409 /* Main.storyboard in Resources */,
+				1ED77BAB26A958C0008583E6 /* lostLifeSound.wav in Resources */,
+				1ED77B9E26A88EB0008583E6 /* ballHit.wav in Resources */,
+				1ED77BA926A957F2008583E6 /* gameOverSound.wav in Resources */,
 				1ED77B9A269EDC82008583E6 /* Spark.sks in Resources */,
 				1E97C7D6269865080044F409 /* GameScene.sks in Resources */,
+				1ED77BA526A894F5008583E6 /* extraLife.wav in Resources */,
 				1E97C7E12698650B0044F409 /* Assets.xcassets in Resources */,
 				1E97C7D8269865080044F409 /* Actions.sks in Resources */,
 			);

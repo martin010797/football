@@ -58,6 +58,14 @@ class GameScene: SKScene {
     var countdownLabel = SKLabelNode(fontNamed: "Verdana-Bold")
     var countdown = 0
     
+    var soundsTurnedOn = true
+    let ballHitSound = SKAction.playSoundFileNamed("ballHit.wav", waitForCompletion: false)
+    let goalCelebrationSound = SKAction.playSoundFileNamed("celebration_goal.mp3", waitForCompletion: false)
+    let extraLifeSound = SKAction.playSoundFileNamed("extraLife.wav", waitForCompletion: false)
+    let scoreSound = SKAction.playSoundFileNamed("score.mp3", waitForCompletion: false)
+    let lostLifeSound = SKAction.playSoundFileNamed("lostLifeSound.wav", waitForCompletion: false)
+    let gameOverSounnd = SKAction.playSoundFileNamed("gameOverSound.wav", waitForCompletion: false)
+    
     let ballNode = SKSpriteNode(imageNamed: "ball")
     let background = SKSpriteNode(imageNamed: "background2")
     let topInfoBar = SKSpriteNode(color: UIColor.systemGreen, size: CGSize(width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT))
@@ -76,7 +84,7 @@ class GameScene: SKScene {
         pauseLabelNode.fontSize = 60
         pauseLabelNode.horizontalAlignmentMode = .center
         pauseLabelNode.verticalAlignmentMode = .center
-        scoreLabelNode.zPosition = 100
+        pauseLabelNode.zPosition = 100
         addChild(pauseLabelNode)
         pauseLabelNode.isHidden = true
         
@@ -106,7 +114,7 @@ class GameScene: SKScene {
         livesLabelNode.zPosition = 5
         livesLabelNode.horizontalAlignmentMode = .left
         livesLabelNode.verticalAlignmentMode = .top
-        livesLabelNode.position = CGPoint(x: frame.midX - frame.size.width * 4 / 10, y: frame.midY - 10)
+        livesLabelNode.position = CGPoint(x: frame.midX - frame.size.width / 2 + 25, y: frame.midY - 10)
         topInfoBar.addChild(livesLabelNode)
         
         scoreLabelNode.text = "Skóre: " + String(score)
@@ -115,7 +123,7 @@ class GameScene: SKScene {
         scoreLabelNode.zPosition = 6
         scoreLabelNode.horizontalAlignmentMode = .right
         scoreLabelNode.verticalAlignmentMode = .top
-        scoreLabelNode.position = CGPoint(x: frame.midX + frame.size.width * 4 / 10, y: frame.midY - 10)
+        scoreLabelNode.position = CGPoint(x: frame.midX + frame.size.width / 2 - 15, y: frame.midY - 10)
         topInfoBar.addChild(scoreLabelNode)
         
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
@@ -200,6 +208,10 @@ class GameScene: SKScene {
         }
         physicsWorld.speed = 1
         isGamePaused = false
+    }
+    
+    func soundsButtonePressed(){
+        soundsTurnedOn = !soundsTurnedOn
     }
     
     func nastavRychlost(kazdychSekund: Double) {
@@ -301,7 +313,6 @@ class GameScene: SKScene {
         }
     }
     
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !isGamePaused {
             for touch in touches {
@@ -332,36 +343,14 @@ class GameScene: SKScene {
                         
                         b.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
                         b.userData?.setValue(true, forKey: "hitted")
+                        if soundsTurnedOn {
+                            run(ballHitSound)
+                        }
                     }
                 }
                 
             }
         }
-//        textureNode.physicsBody!.applyImpulse(CGVector(dx: -100.0, dy: -2.0))
-        
-        //otacanie node
-//        textureNode.run(SKAction.rotate(byAngle: CGFloat(Double.pi/2), duration: 2.0))
-        //secondSpriteNode.run(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 2.0))
-        
-        //aby sa otacal stale
-//        if !secondSpriteNode.hasActions() {
-            //samotne tocenie sa
-//            secondSpriteNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 2.0)))
-            //viacero akcii napriklad tocenie a zmensovanie. cez group sa vykonava naraz
-//            secondSpriteNode.run(SKAction.group([SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 2.0), SKAction.scale(by: 0.9, duration: 2.0)]))
-            //viacero akcii ale cez sequence sa vykonavaju postupne
-//            secondSpriteNode.run(SKAction.sequence([SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 2.0), SKAction.scale(by: 0.9, duration: 2.0)]))
-//        }else{
-//            secondSpriteNode.removeAllActions()
-//        }
-//
-        //ked si takto vytovrim akciu tak sa k nej môzem hocikedy odvolat pomocou klucu
-//        if let _ = textureNode.action(forKey: "Rotation") {
-//            textureNode.removeAction(forKey: "Rotation")
-//        }else{
-//            textureNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi/2), duration: 2.0)), withKey: "Rotation")
-//        }
-        
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -380,6 +369,9 @@ class GameScene: SKScene {
                     ball.userData!.setValue(false, forKey: "hitted")
                     
                     scoreLabel(node: ball, value: String(1))
+                    if soundsTurnedOn {
+                        run(scoreSound)
+                    }
                 }
             }
         }
@@ -417,6 +409,9 @@ class GameScene: SKScene {
                 print("hrac dostal gol")
                 numberOfLives -= 1
                 livesLabelNode.text = "❤️ " + String(numberOfLives)
+                if soundsTurnedOn {
+                    run(lostLifeSound)
+                }
             }else if ball.position.y > (frame.midY + frame.size.height * 30 / 100) {
                 if ball.position.x > (frame.midX - frame.size.width / 8) && ball.position.x < (frame.midX + frame.size.width / 8) {
                     if let sparks = SKEmitterNode(fileNamed: "Spark") {
@@ -436,7 +431,13 @@ class GameScene: SKScene {
                             numberOfLives += 1
                             livesLabelNode.text = "❤️ " + String(numberOfLives)
                             scoreLabel(node: ball, value: "❤️")
+                            if soundsTurnedOn {
+                                run(extraLifeSound)
+                            }
                         }
+                    }
+                    if soundsTurnedOn {
+                        run(goalCelebrationSound)
                     }
                     print("GOL!")
                 }else{

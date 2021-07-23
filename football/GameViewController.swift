@@ -13,14 +13,13 @@ class GameViewController: UIViewController {
     var gameScene:GameScene?
     var isPaused = false
     var soundsTurnedOn = true
+    var reachedScore = 0
     
     var ignoreTimer = Timer()
     var ignorePauseButton = true
     @IBOutlet weak var pauseButton: UIButton!
     @IBOutlet weak var soundButton: UIButton!
-    
-    //    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameViewController.startGame), name: "myNotification", object: nil)
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 //        pauseButton.tintColor = UIColor.black
@@ -34,8 +33,9 @@ class GameViewController: UIViewController {
 //                scene.scaleMode = .aspectFill
                 scene.scaleMode = .fill
                 gameScene = scene as? GameScene
-//                gameScene?.startGame()
                 
+                gameScene?.viewController = self
+                                
                 // Present the scene
                 view.presentScene(scene)
             }
@@ -52,8 +52,6 @@ class GameViewController: UIViewController {
         DispatchQueue.main.async(){
             self.performSegue(withIdentifier: "showPopup", sender: self)
         }
-        
-        
     }
     
     @objc func stopIgnoring(){
@@ -62,6 +60,7 @@ class GameViewController: UIViewController {
     
     @objc func startGame(){
         gameScene?.startGame(count: 3)
+        reachedScore = 0
         ignoreTimer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: Selector("stopIgnoring"), userInfo: nil, repeats: false)
     }
     
@@ -91,5 +90,18 @@ class GameViewController: UIViewController {
             soundsTurnedOn = true
         }
         gameScene?.soundsButtonePressed()
+    }
+    
+    func gameOver(score: Int){
+        ignorePauseButton = true
+        reachedScore = score
+        performSegue(withIdentifier: "showScoreTableSegue", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showScoreTableSegue" {
+            let scoreTableViewController = segue.destination as! ScoreTableViewController
+            scoreTableViewController.reachedScore = self.reachedScore
+        }
     }
 }

@@ -22,6 +22,8 @@
 		1ED77BA726A8951A008583E6 /* score.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 1ED77BA626A8951A008583E6 /* score.mp3 */; };
 		1ED77BA926A957F2008583E6 /* gameOverSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1ED77BA826A957F2008583E6 /* gameOverSound.wav */; };
 		1ED77BAB26A958C0008583E6 /* lostLifeSound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 1ED77BAA26A958C0008583E6 /* lostLifeSound.wav */; };
+		1ED77BAD26A96C39008583E6 /* ScoreTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED77BAC26A96C38008583E6 /* ScoreTableViewController.swift */; };
+		1ED77BAF26A9E5FF008583E6 /* ScoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ED77BAE26A9E5FF008583E6 /* ScoreCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +44,8 @@
 		1ED77BA626A8951A008583E6 /* score.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = score.mp3; path = football/score.mp3; sourceTree = SOURCE_ROOT; };
 		1ED77BA826A957F2008583E6 /* gameOverSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = gameOverSound.wav; path = football/gameOverSound.wav; sourceTree = SOURCE_ROOT; };
 		1ED77BAA26A958C0008583E6 /* lostLifeSound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = lostLifeSound.wav; path = football/lostLifeSound.wav; sourceTree = SOURCE_ROOT; };
+		1ED77BAC26A96C38008583E6 /* ScoreTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreTableViewController.swift; sourceTree = "<group>"; };
+		1ED77BAE26A9E5FF008583E6 /* ScoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +84,8 @@
 				1E97C7D9269865080044F409 /* GameScene.swift */,
 				1ED77B9B269F40B0008583E6 /* PopupViewController.swift */,
 				1E97C7DB269865080044F409 /* GameViewController.swift */,
+				1ED77BAC26A96C38008583E6 /* ScoreTableViewController.swift */,
+				1ED77BAE26A9E5FF008583E6 /* ScoreCell.swift */,
 				1E97C7DD269865080044F409 /* Main.storyboard */,
 				1E97C7E02698650B0044F409 /* Assets.xcassets */,
 				1E97C7E22698650B0044F409 /* Info.plist */,
@@ -183,6 +189,8 @@
 				1E97C7DA269865080044F409 /* GameScene.swift in Sources */,
 				1E97C7DC269865080044F409 /* GameViewController.swift in Sources */,
 				1E97C7D4269865070044F409 /* AppDelegate.swift in Sources */,
+				1ED77BAD26A96C39008583E6 /* ScoreTableViewController.swift in Sources */,
+				1ED77BAF26A9E5FF008583E6 /* ScoreCell.swift in Sources */,
 				1ED77B9C269F40B0008583E6 /* PopupViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

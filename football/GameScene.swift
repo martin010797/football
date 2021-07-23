@@ -35,9 +35,8 @@ let MAX_COMBO = 4
 
 
 class GameScene: SKScene {
+    var viewController: GameViewController!
     
-//    let firstSpriteNode = SKSpriteNode(color: UIColor.red, size: CGSize(width: 200.0, height: 200.0))
-//    let secondSpriteNode = SKSpriteNode(color: UIColor.blue, size: CGSize(width: 100.0, height: 100.0))
     var balls :[SKSpriteNode] = [SKSpriteNode]()
     var timerBalls = Timer()
     var numberOfBallsShot = 0
@@ -64,7 +63,7 @@ class GameScene: SKScene {
     let extraLifeSound = SKAction.playSoundFileNamed("extraLife.wav", waitForCompletion: false)
     let scoreSound = SKAction.playSoundFileNamed("score.mp3", waitForCompletion: false)
     let lostLifeSound = SKAction.playSoundFileNamed("lostLifeSound.wav", waitForCompletion: false)
-    let gameOverSounnd = SKAction.playSoundFileNamed("gameOverSound.wav", waitForCompletion: false)
+    let gameOverSound = SKAction.playSoundFileNamed("gameOverSound.wav", waitForCompletion: false)
     
     let ballNode = SKSpriteNode(imageNamed: "ball")
     let background = SKSpriteNode(imageNamed: "background2")
@@ -398,6 +397,43 @@ class GameScene: SKScene {
         }
     }
     
+    func loseLife(){
+        if soundsTurnedOn {
+            run(lostLifeSound)
+        }
+        numberOfLives -= 1
+        livesLabelNode.text = "❤️ " + String(numberOfLives)
+        if numberOfLives <= 0 {
+            gameOver()
+        }
+    }
+    
+    func gameOver(){
+        if soundsTurnedOn {
+            run(gameOverSound)
+        }
+        self.viewController.gameOver(score: score)
+        resetGame()
+    }
+    
+    func resetGame(){
+        numberOfLives = DEFAULT_NUMBER_OF_LIVES
+        score = DEFAULT_SCORE
+        numberOfBallsShot = 0
+        timerBalls.invalidate()
+        yCoordMinSpeed = Y_COORD_DEFAULT_MIN_SPEED
+        yCoordMaxSpeed = Y_COORD_DEFAULT_MAX_SPEED
+        xCoordMinSpeed = X_COORD_DEFAULT_MIN_SPEED
+        xCoordMaxSpeed = X_COORD_DEFAULT_MAX_SPEED
+        comboGoals = 0
+        scoreLabelNode.text = "Skóre: " + String(score)
+        livesLabelNode.text = "❤️ " + String(numberOfLives)
+        for ball in balls {
+            ball.removeFromParent()
+        }
+        balls.removeAll()
+    }
+    
     func checkGoal() {
         for (index, ball) in balls.enumerated() {
             //removing stuck balls
@@ -407,11 +443,7 @@ class GameScene: SKScene {
             if ball.position.y < (frame.midY - frame.size.height * 4 / 10) {
                 removeBall(ball: ball, index: index)
                 print("hrac dostal gol")
-                numberOfLives -= 1
-                livesLabelNode.text = "❤️ " + String(numberOfLives)
-                if soundsTurnedOn {
-                    run(lostLifeSound)
-                }
+                loseLife()
             }else if ball.position.y > (frame.midY + frame.size.height * 30 / 100) {
                 if ball.position.x > (frame.midX - frame.size.width / 8) && ball.position.x < (frame.midX + frame.size.width / 8) {
                     if let sparks = SKEmitterNode(fileNamed: "Spark") {

@@ -55,11 +55,130 @@
                         <outlet property="pauseButton" destination="763-P8-S0R" id="osz-Ou-9ef"/>
                         <outlet property="soundButton" destination="04S-3y-sdb" id="0Qp-p2-z0y"/>
                         <segue destination="DVE-Mu-bna" kind="show" identifier="showPopup" id="Akx-rT-bxz"/>
+                        <segue destination="9i0-3n-A1y" kind="show" identifier="showScoreTableSegue" id="B76-HB-iow"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="34.782608695652179" y="67.633928571428569"/>
+        </scene>
+        <!--Score Table View Controller-->
+        <scene sceneID="xwE-CO-mXs">
+            <objects>
+                <viewController id="9i0-3n-A1y" customClass="ScoreTableViewController" customModule="football" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hPK-RI-cUq">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Koniec hry" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rFa-y7-yiz">
+                                <rect key="frame" x="10" y="15" width="394" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="42" id="UM9-CY-LDF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XAl-n5-y2w">
+                                <rect key="frame" x="0.0" y="107" width="414" height="611"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="scoreCell" rowHeight="50" id="5sS-xI-a33" customClass="ScoreCell" customModule="football" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="24.5" width="414" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5sS-xI-a33" id="zxV-K5-K15">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dátum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OeG-M2-Zjn">
+                                                    <rect key="frame" x="20" y="14" width="172" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="EHq-9G-ZAa"/>
+                                                        <constraint firstAttribute="width" constant="172" id="KWM-k1-AWf"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Skóre" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lU6-Mw-7z0">
+                                                    <rect key="frame" x="274" y="13" width="120" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="24" id="fcZ-Gs-Eew"/>
+                                                        <constraint firstAttribute="width" constant="120" id="fxh-jG-hgz"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="lU6-Mw-7z0" firstAttribute="trailing" secondItem="zxV-K5-K15" secondAttribute="trailingMargin" id="1EA-ch-46W"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="OeG-M2-Zjn" secondAttribute="bottom" constant="4" id="9s2-8A-Ry7"/>
+                                                <constraint firstItem="OeG-M2-Zjn" firstAttribute="leading" secondItem="zxV-K5-K15" secondAttribute="leadingMargin" id="NLg-xi-GB9"/>
+                                                <constraint firstItem="OeG-M2-Zjn" firstAttribute="top" secondItem="zxV-K5-K15" secondAttribute="topMargin" constant="3" id="elb-v7-8s3"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="lU6-Mw-7z0" secondAttribute="bottom" constant="2" id="g3H-vP-3SL"/>
+                                                <constraint firstItem="lU6-Mw-7z0" firstAttribute="top" secondItem="zxV-K5-K15" secondAttribute="topMargin" constant="2" id="i2w-fZ-9By"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dateLabel" destination="OeG-M2-Zjn" id="rLt-TE-XsG"/>
+                                            <outlet property="scoreLabel" destination="lU6-Mw-7z0" id="f3h-Um-9SQ"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bpM-Gk-i5X">
+                                <rect key="frame" x="118" y="733" width="178" height="50"/>
+                                <color key="backgroundColor" systemColor="systemTealColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="46r-6v-g8w"/>
+                                    <constraint firstAttribute="width" constant="178" id="PWD-e2-daV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                <state key="normal" title="Hrať znova">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="playAgainButtonPressed:" destination="9i0-3n-A1y" eventType="touchUpInside" id="eIs-tN-W56"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Skóre: 25" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jSH-X0-5JZ">
+                                <rect key="frame" x="20" y="67" width="374" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="012-Sy-ku4"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ubY-Nj-OaT"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="rFa-y7-yiz" firstAttribute="leading" secondItem="ubY-Nj-OaT" secondAttribute="leading" constant="10" id="12p-bP-9X7"/>
+                            <constraint firstItem="XAl-n5-y2w" firstAttribute="leading" secondItem="ubY-Nj-OaT" secondAttribute="leading" id="9QG-76-3rj"/>
+                            <constraint firstItem="ubY-Nj-OaT" firstAttribute="trailing" secondItem="jSH-X0-5JZ" secondAttribute="trailing" constant="20" id="D8i-Yl-Kya"/>
+                            <constraint firstItem="rFa-y7-yiz" firstAttribute="top" secondItem="ubY-Nj-OaT" secondAttribute="top" constant="15" id="DxY-lh-z86"/>
+                            <constraint firstItem="bpM-Gk-i5X" firstAttribute="centerX" secondItem="hPK-RI-cUq" secondAttribute="centerX" id="HPh-7F-ZsS"/>
+                            <constraint firstItem="jSH-X0-5JZ" firstAttribute="leading" secondItem="ubY-Nj-OaT" secondAttribute="leading" constant="20" id="KXP-Wd-4IH"/>
+                            <constraint firstItem="XAl-n5-y2w" firstAttribute="top" secondItem="jSH-X0-5JZ" secondAttribute="bottom" constant="10" id="OlC-Z1-OCL"/>
+                            <constraint firstItem="ubY-Nj-OaT" firstAttribute="trailing" secondItem="rFa-y7-yiz" secondAttribute="trailing" constant="10" id="Qog-LV-nhp"/>
+                            <constraint firstItem="XAl-n5-y2w" firstAttribute="trailing" secondItem="ubY-Nj-OaT" secondAttribute="trailing" id="bUL-zs-AAB"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="bpM-Gk-i5X" secondAttribute="bottom" constant="25" id="cOX-Ct-Ahc"/>
+                            <constraint firstItem="jSH-X0-5JZ" firstAttribute="top" secondItem="rFa-y7-yiz" secondAttribute="bottom" constant="10" id="ddq-Gv-FEf"/>
+                            <constraint firstItem="bpM-Gk-i5X" firstAttribute="top" secondItem="XAl-n5-y2w" secondAttribute="bottom" constant="15" id="q3h-dX-XZn"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="I7P-GS-Y7k"/>
+                    <connections>
+                        <outlet property="playAgainButton" destination="bpM-Gk-i5X" id="gLT-4O-VkU"/>
+                        <outlet property="scoreLabel" destination="jSH-X0-5JZ" id="rBk-Ex-43b"/>
+                        <outlet property="scoreTableView" destination="XAl-n5-y2w" id="SSp-rN-V9H"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4ux-Os-Oc9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="886.95652173913049" y="480.80357142857139"/>
         </scene>
         <!--Popup View Controller-->
         <scene sceneID="dTV-eg-mxf">
@@ -139,7 +258,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rte-qd-NOv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="857.97101449275374" y="67.633928571428569"/>
+            <point key="canvasLocation" x="887" y="-199"/>
         </scene>
     </scenes>
     <resources>

@@ -26,7 +26,6 @@ class PopupViewController: UIViewController {
     
     @IBAction func startGame(_ sender: Any) {
         dismiss(animated: true, completion: nil)
-//        NotificationCenter.default.post(name: NSNotification.Name("start"), object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {

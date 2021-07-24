@@ -9,10 +9,10 @@ import UIKit
 import SpriteKit
 
 class GameViewController: UIViewController {
-    
+        
     var gameScene:GameScene?
     var isPaused = false
-    var soundsTurnedOn = true
+    var soundsTurnedOff = false
     var reachedScore = 0
     
     var ignoreTimer = Timer()
@@ -22,15 +22,20 @@ class GameViewController: UIViewController {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-//        pauseButton.tintColor = UIColor.black
         pauseButton.setImage(UIImage(named: "pauseButton"), for: .normal)
         soundButton.setImage(UIImage(named: "soundimage"), for: .normal)
+        
+        soundsTurnedOff = UserDefaults.standard.bool(forKey: SOUNDS_ON_OFF_KEY)
+        if soundsTurnedOff {
+            soundButton.setImage(UIImage(named: "noSound"), for: .normal)
+        }else{
+            soundButton.setImage(UIImage(named: "soundimage"), for: .normal)
+        }
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
             if let scene = SKScene(fileNamed: "GameScene") {
                 // Set the scale mode to scale to fit the window
-//                scene.scaleMode = .aspectFill
                 scene.scaleMode = .fill
                 gameScene = scene as? GameScene
                 
@@ -39,16 +44,11 @@ class GameViewController: UIViewController {
                 // Present the scene
                 view.presentScene(scene)
             }
-            
 
             view.ignoresSiblingOrder = true
-
-            view.showsFPS = true
-            view.showsNodeCount = true
-            view.showsPhysics = true
-
         }
         NotificationCenter.default.addObserver(self, selector: #selector(GameViewController.startGame), name: NSNotification.Name("start"), object: nil)
+        
         DispatchQueue.main.async(){
             self.performSegue(withIdentifier: "showPopup", sender: self)
         }
@@ -82,13 +82,13 @@ class GameViewController: UIViewController {
     }
     
     @IBAction func soundButtonPressed(_ sender: Any) {
-        if soundsTurnedOn {
+        soundsTurnedOff = !soundsTurnedOff
+        if soundsTurnedOff {
             soundButton.setImage(UIImage(named: "noSound"), for: .normal)
-            soundsTurnedOn = false
         }else{
             soundButton.setImage(UIImage(named: "soundimage"), for: .normal)
-            soundsTurnedOn = true
         }
+        UserDefaults.standard.set(soundsTurnedOff, forKey: SOUNDS_ON_OFF_KEY)
         gameScene?.soundsButtonePressed()
     }
     

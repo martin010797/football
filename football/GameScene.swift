@@ -31,8 +31,9 @@ let LEVEL_8_BALLS_COUNT = 50
 let LEVEL_9_BALLS_COUNT = 70
 let LEVEL_10_BALLS_COUNT = 100
 
-let MAX_COMBO = 4
+let SOUNDS_ON_OFF_KEY = "SoundsOnOff"
 
+let MAX_COMBO = 4
 
 class GameScene: SKScene {
     var viewController: GameViewController!
@@ -57,7 +58,7 @@ class GameScene: SKScene {
     var countdownLabel = SKLabelNode(fontNamed: "Verdana-Bold")
     var countdown = 0
     
-    var soundsTurnedOn = true
+    var soundsTurnedOff = false
     let ballHitSound = SKAction.playSoundFileNamed("ballHit.wav", waitForCompletion: false)
     let goalCelebrationSound = SKAction.playSoundFileNamed("celebration_goal.mp3", waitForCompletion: false)
     let extraLifeSound = SKAction.playSoundFileNamed("extraLife.wav", waitForCompletion: false)
@@ -75,6 +76,9 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         background.position = CGPoint(x: frame.midX, y: frame.midY)
+        
+        soundsTurnedOff = UserDefaults.standard.bool(forKey: SOUNDS_ON_OFF_KEY)
+        
         addChild(background)
         background.zPosition = -1
         
@@ -128,8 +132,6 @@ class GameScene: SKScene {
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         
-        
-        
         self.view?.isPaused = true
     }
     
@@ -153,7 +155,7 @@ class GameScene: SKScene {
     
     func endCountdown() {
         countdownLabel.removeFromParent()
-        nastavRychlost(kazdychSekund: 4)
+        setSpeed(eachSeconds: 4)
         addBall()
     }
     
@@ -195,31 +197,30 @@ class GameScene: SKScene {
             ball.isPaused = false
         }
         if numberOfBallsShot < LEVEL_2_BALLS_COUNT{
-            nastavRychlost(kazdychSekund: 4)
+            setSpeed(eachSeconds: 4)
         }else if numberOfBallsShot < LEVEL_4_BALLS_COUNT{
-            nastavRychlost(kazdychSekund: 3)
+            setSpeed(eachSeconds: 3)
         }else if numberOfBallsShot < LEVEL_5_BALLS_COUNT{
-            nastavRychlost(kazdychSekund: 2)
+            setSpeed(eachSeconds: 2)
         }else if numberOfBallsShot < LEVEL_7_BALLS_COUNT{
-            nastavRychlost(kazdychSekund: 1.5)
+            setSpeed(eachSeconds: 1.5)
         }else{
-            nastavRychlost(kazdychSekund: 1)
+            setSpeed(eachSeconds: 1)
         }
         physicsWorld.speed = 1
         isGamePaused = false
     }
     
     func soundsButtonePressed(){
-        soundsTurnedOn = !soundsTurnedOn
+        soundsTurnedOff = !soundsTurnedOff
     }
     
-    func nastavRychlost(kazdychSekund: Double) {
+    func setSpeed(eachSeconds: Double) {
         if timerBalls.isValid {
             timerBalls.invalidate()
-            timerBalls = Timer.scheduledTimer(timeInterval: kazdychSekund, target: self, selector: Selector("addBall"), userInfo: nil, repeats: true)
+            timerBalls = Timer.scheduledTimer(timeInterval: eachSeconds, target: self, selector: Selector("addBall"), userInfo: nil, repeats: true)
         }else{
-//            timerBalls.invalidate()
-            timerBalls = Timer.scheduledTimer(timeInterval: kazdychSekund, target: self, selector: Selector("addBall"), userInfo: nil, repeats: true)
+            timerBalls = Timer.scheduledTimer(timeInterval: eachSeconds, target: self, selector: Selector("addBall"), userInfo: nil, repeats: true)
         }
     }
 
@@ -248,6 +249,7 @@ class GameScene: SKScene {
         ball.physicsBody!.collisionBitMask = NO_CATEGORY
         ball.physicsBody!.restitution = 1.0
         ball.userData = NSMutableDictionary()
+        
         if imageName == "ball" {
             ball.userData?.setValue(false, forKey: "golden")
         }else{
@@ -262,7 +264,6 @@ class GameScene: SKScene {
         
         let randomXPosition = Double.random(in: (Double(frame.midX) - Double(frame.size.width) * 2 / 5) ..< (Double(frame.midX) + Double(frame.size.width) * 2 / 5))
         ball.position = CGPoint(x: CGFloat(randomXPosition), y: frame.midY + frame.size.height * 1/4)
-
     }
     
     func changeDifficulty() {
@@ -270,43 +271,34 @@ class GameScene: SKScene {
         case LEVEL_2_BALLS_COUNT:
             yCoordMaxSpeed = -800
             yCoordMinSpeed = -600
-            nastavRychlost(kazdychSekund: 3)
-            print("level 2")
+            setSpeed(eachSeconds: 3)
         case LEVEL_3_BALLS_COUNT:
             yCoordMaxSpeed = -900
             yCoordMinSpeed = -650
-            print("level 3")
         case LEVEL_4_BALLS_COUNT:
             yCoordMaxSpeed = -900
             yCoordMinSpeed = -700
-            nastavRychlost(kazdychSekund: 2)
-            print("level 4")
+            setSpeed(eachSeconds: 2)
         case LEVEL_5_BALLS_COUNT:
             yCoordMaxSpeed = -1000
             yCoordMinSpeed = -750
-            nastavRychlost(kazdychSekund: 1.5)
-            print("level 5")
+            setSpeed(eachSeconds: 1.5)
         case LEVEL_6_BALLS_COUNT:
             yCoordMaxSpeed = -1100
             yCoordMinSpeed = -750
-            print("level 6")
         case LEVEL_7_BALLS_COUNT:
             yCoordMaxSpeed = -1150
             yCoordMinSpeed = -750
-            nastavRychlost(kazdychSekund: 1)
-            print("level 7")
+            setSpeed(eachSeconds: 1)
         case LEVEL_8_BALLS_COUNT:
             yCoordMaxSpeed = -1150
             yCoordMinSpeed = -800
-            print("level 8")
         case LEVEL_9_BALLS_COUNT:
             yCoordMaxSpeed = -1250
             yCoordMinSpeed = -800
-            print("level 9")
         case LEVEL_10_BALLS_COUNT:
             yCoordMaxSpeed = -1350
             yCoordMinSpeed = -800
-            print("level 10")
         default:
             print("no change")
         }
@@ -318,13 +310,9 @@ class GameScene: SKScene {
                 let location = touch.location(in: self)
                 for b in balls {
                     if b.contains(location) && location.y <= 0 {
-                        print("hit")
                         var posunX = (b.frame.midX - location.x)*15
                         var posunY = (b.frame.midY - location.y)*15
-                        print(" posX: \(posunX) posY: \(posunY)")
-                        print(b.physicsBody!.velocity)
                         let rychlost = abs(b.physicsBody!.velocity.dx) + abs(b.physicsBody!.velocity.dy)
-                        print(rychlost)
                         
                         if (b.frame.midX - location.x) > 0 {
                             posunX = (b.frame.midX - location.x) + abs(b.frame.midX - location.x) / (abs(b.frame.midX - location.x) + abs(b.frame.midY - location.y)) * rychlost
@@ -338,11 +326,10 @@ class GameScene: SKScene {
                         }
                         posunX = posunX + posunX * 2 / 3
                         posunY = posunY + posunY * 2 / 3
-                        print(" posX2: \(posunX) posY2: \(posunY)")
                         
                         b.physicsBody!.applyImpulse(CGVector(dx: posunX, dy: posunY))
                         b.userData?.setValue(true, forKey: "hitted")
-                        if soundsTurnedOn {
+                        if !soundsTurnedOff {
                             run(ballHitSound)
                         }
                     }
@@ -353,7 +340,6 @@ class GameScene: SKScene {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
         checkGoal()
         checkCrossinngHalf()
     }
@@ -368,7 +354,7 @@ class GameScene: SKScene {
                     ball.userData!.setValue(false, forKey: "hitted")
                     
                     scoreLabel(node: ball, value: String(1))
-                    if soundsTurnedOn {
+                    if !soundsTurnedOff {
                         run(scoreSound)
                     }
                 }
@@ -398,7 +384,7 @@ class GameScene: SKScene {
     }
     
     func loseLife(){
-        if soundsTurnedOn {
+        if !soundsTurnedOff {
             run(lostLifeSound)
         }
         numberOfLives -= 1
@@ -409,7 +395,7 @@ class GameScene: SKScene {
     }
     
     func gameOver(){
-        if soundsTurnedOn {
+        if !soundsTurnedOff {
             run(gameOverSound)
         }
         self.viewController.gameOver(score: score)
@@ -436,13 +422,11 @@ class GameScene: SKScene {
     
     func checkGoal() {
         for (index, ball) in balls.enumerated() {
-            //removing stuck balls
             if (abs(ball.physicsBody!.velocity.dx) + abs(ball.physicsBody!.velocity.dy)) < 300 {
                 removeBall(ball: ball, index: index)
             }
             if ball.position.y < (frame.midY - frame.size.height * 4 / 10) {
                 removeBall(ball: ball, index: index)
-                print("hrac dostal gol")
                 loseLife()
             }else if ball.position.y > (frame.midY + frame.size.height * 30 / 100) {
                 if ball.position.x > (frame.midX - frame.size.width / 8) && ball.position.x < (frame.midX + frame.size.width / 8) {
@@ -463,18 +447,16 @@ class GameScene: SKScene {
                             numberOfLives += 1
                             livesLabelNode.text = "❤️ " + String(numberOfLives)
                             scoreLabel(node: ball, value: "❤️")
-                            if soundsTurnedOn {
+                            if !soundsTurnedOff {
                                 run(extraLifeSound)
                             }
                         }
                     }
-                    if soundsTurnedOn {
+                    if !soundsTurnedOff {
                         run(goalCelebrationSound)
                     }
-                    print("GOL!")
                 }else{
                     comboGoals = 0
-                    print("Mimo brany")
                 }
                 removeBall(ball: ball, index: index)
             }

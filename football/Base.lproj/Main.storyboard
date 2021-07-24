@@ -76,50 +76,49 @@
                                     <constraint firstAttribute="height" constant="42" id="UM9-CY-LDF"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="35"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XAl-n5-y2w">
                                 <rect key="frame" x="0.0" y="107" width="414" height="611"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="scoreCell" rowHeight="50" id="5sS-xI-a33" customClass="ScoreCell" customModule="football" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="24.5" width="414" height="50"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="scoreCell" rowHeight="40" id="5sS-xI-a33" customClass="ScoreCell" customModule="football" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="24.5" width="414" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5sS-xI-a33" id="zxV-K5-K15">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dátum" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OeG-M2-Zjn">
-                                                    <rect key="frame" x="20" y="14" width="172" height="21"/>
+                                                    <rect key="frame" x="20" y="10" width="172" height="20.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="21" id="EHq-9G-ZAa"/>
                                                         <constraint firstAttribute="width" constant="172" id="KWM-k1-AWf"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Skóre" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lU6-Mw-7z0">
-                                                    <rect key="frame" x="274" y="13" width="120" height="24"/>
+                                                    <rect key="frame" x="274" y="10" width="120" height="20.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="24" id="fcZ-Gs-Eew"/>
                                                         <constraint firstAttribute="width" constant="120" id="fxh-jG-hgz"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="lU6-Mw-7z0" firstAttribute="trailing" secondItem="zxV-K5-K15" secondAttribute="trailingMargin" id="1EA-ch-46W"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="OeG-M2-Zjn" secondAttribute="bottom" constant="4" id="9s2-8A-Ry7"/>
+                                                <constraint firstItem="OeG-M2-Zjn" firstAttribute="centerY" secondItem="zxV-K5-K15" secondAttribute="centerY" id="Dkn-Om-Z8N"/>
                                                 <constraint firstItem="OeG-M2-Zjn" firstAttribute="leading" secondItem="zxV-K5-K15" secondAttribute="leadingMargin" id="NLg-xi-GB9"/>
-                                                <constraint firstItem="OeG-M2-Zjn" firstAttribute="top" secondItem="zxV-K5-K15" secondAttribute="topMargin" constant="3" id="elb-v7-8s3"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="lU6-Mw-7z0" secondAttribute="bottom" constant="2" id="g3H-vP-3SL"/>
-                                                <constraint firstItem="lU6-Mw-7z0" firstAttribute="top" secondItem="zxV-K5-K15" secondAttribute="topMargin" constant="2" id="i2w-fZ-9By"/>
+                                                <constraint firstItem="lU6-Mw-7z0" firstAttribute="centerY" secondItem="zxV-K5-K15" secondAttribute="centerY" id="bqx-ff-hvQ"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="dateLabel" destination="OeG-M2-Zjn" id="rLt-TE-XsG"/>
                                             <outlet property="scoreLabel" destination="lU6-Mw-7z0" id="f3h-Um-9SQ"/>
@@ -129,7 +128,7 @@
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bpM-Gk-i5X">
                                 <rect key="frame" x="118" y="733" width="178" height="50"/>
-                                <color key="backgroundColor" systemColor="systemTealColor"/>
+                                <color key="backgroundColor" systemColor="systemGreenColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="46r-6v-g8w"/>
                                     <constraint firstAttribute="width" constant="178" id="PWD-e2-daV"/>
@@ -148,12 +147,12 @@
                                     <constraint firstAttribute="height" constant="30" id="012-Sy-ku4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ubY-Nj-OaT"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="rFa-y7-yiz" firstAttribute="leading" secondItem="ubY-Nj-OaT" secondAttribute="leading" constant="10" id="12p-bP-9X7"/>
                             <constraint firstItem="XAl-n5-y2w" firstAttribute="leading" secondItem="ubY-Nj-OaT" secondAttribute="leading" id="9QG-76-3rj"/>
@@ -189,32 +188,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eO7-0B-rSr">
-                                <rect key="frame" x="40" y="198" width="334" height="550"/>
+                                <rect key="frame" x="40" y="25" width="334" height="743"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eag-m8-xhC">
-                                        <rect key="frame" x="78" y="470" width="178" height="50"/>
-                                        <color key="backgroundColor" systemColor="systemTealColor"/>
+                                        <rect key="frame" x="78" y="663" width="178" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemGreenColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="M2z-di-Da9"/>
                                             <constraint firstAttribute="width" constant="178" id="Wzs-nj-x7v"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                        <state key="normal" title="Rozumiem">
+                                        <state key="normal" title="Spustiť hru">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
                                             <action selector="startGame:" destination="DVE-Mu-bna" eventType="touchUpInside" id="sri-iQ-XoS"/>
                                         </connections>
                                     </button>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5Hm-cP-XQ5">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Hm-cP-XQ5">
                                         <rect key="frame" x="8" y="220" width="318" height="250"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="250" id="PbY-Uu-1U2"/>
                                         </constraints>
-                                        <string key="text">Zabráňte gólom ťuknutím na prichádzajúce lopty. Za odstrelenie cez polovicu ihriska je 1 bod a za vstrelenie gólu 3 body. Vstrelené góly hneď po sebe zvyšujú kombo až do výšky štyri, čím sa prenásobujú 3 body za gól. Napríklad ak vstrelíte 3 góly po sebe tak za tretí gól bude 9 bodov(3 x 3). Začína sa s tromi životmi. Ďalšie životy je možné získať vstrelením gólu zlatou loptou.</string>
+                                        <string key="text">Zabráň gólom ťuknutím na prichádzajúce lopty.  Prechod lopty cez polovicu +1 bod. Vstrelený gól +3 body. Maximálne kombo pre góly je 4 (12 bodov za gól).  Hra sa začína s tromi životmi. Ďalšie životy je možné získať vstrelením gólu zlatou loptou.</string>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IjS-XB-g51">
@@ -228,7 +227,6 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="IjS-XB-g51" secondAttribute="trailing" constant="10" id="3GK-xp-tKK"/>
                                     <constraint firstItem="5Hm-cP-XQ5" firstAttribute="leading" secondItem="eO7-0B-rSr" secondAttribute="leading" constant="8" id="3kQ-bs-cWm"/>
-                                    <constraint firstAttribute="height" constant="550" id="6T5-JF-w1W"/>
                                     <constraint firstAttribute="bottom" secondItem="Eag-m8-xhC" secondAttribute="bottom" constant="30" id="FfI-KJ-Ecw"/>
                                     <constraint firstItem="IjS-XB-g51" firstAttribute="top" secondItem="eO7-0B-rSr" secondAttribute="top" constant="10" id="Uig-Yy-zuk"/>
                                     <constraint firstItem="5Hm-cP-XQ5" firstAttribute="top" secondItem="IjS-XB-g51" secondAttribute="bottom" constant="10" id="baE-23-Xpi"/>
@@ -243,8 +241,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="eO7-0B-rSr" firstAttribute="top" secondItem="mUS-Xp-Wi3" secondAttribute="top" constant="25" id="5Sb-hL-bnm"/>
                             <constraint firstItem="mUS-Xp-Wi3" firstAttribute="trailing" secondItem="eO7-0B-rSr" secondAttribute="trailing" constant="40" id="VzZ-Id-zB0"/>
-                            <constraint firstItem="mUS-Xp-Wi3" firstAttribute="bottom" secondItem="eO7-0B-rSr" secondAttribute="bottom" constant="60" id="qDb-AI-I9N"/>
+                            <constraint firstItem="mUS-Xp-Wi3" firstAttribute="bottom" secondItem="eO7-0B-rSr" secondAttribute="bottom" constant="40" id="qDb-AI-I9N"/>
                             <constraint firstItem="eO7-0B-rSr" firstAttribute="leading" secondItem="mUS-Xp-Wi3" secondAttribute="leading" constant="40" id="vDl-MV-qde"/>
                         </constraints>
                     </view>
@@ -267,8 +266,8 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemTealColor">
-            <color red="0.35294117647058826" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

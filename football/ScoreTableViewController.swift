@@ -18,12 +18,13 @@ class ScoreTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     var scoreArray = [ScoreData]()
+    var started = false
     
     @IBOutlet weak var playAgainButton: UIButton!
     @IBOutlet weak var scoreLabel: UILabel!
     @IBOutlet weak var scoreTableView: UITableView!
     
-    var reachedScore: Int = 0
+    var reachedScore: Int = DEFAULT_SCORE
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,13 +42,11 @@ class ScoreTableViewController: UIViewController, UITableViewDataSource, UITable
         scoreLabel.text = "Dosiahnuté skóre: " + String(reachedScore)
                 
         playAgainButton.layer.cornerRadius = 10.0
-        applyShadow(button: playAgainButton)
-        
     }
     
     func changeTableOfScoreAndSave() {
         let df = DateFormatter()
-        df.dateFormat = "dd-MM-yyyy"
+        df.dateFormat = "dd.MM.yyyy"
         let date = df.string(from: Date())
         
         let newScoreData = ScoreData(date: date, score: reachedScore)
@@ -66,16 +65,10 @@ class ScoreTableViewController: UIViewController, UITableViewDataSource, UITable
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        if isBeingDismissed {
+        if isBeingDismissed && !started {
             NotificationCenter.default.post(name: NSNotification.Name("start"), object: nil)
+            started = true
         }
-    }
-    
-    func applyShadow(button: UIButton){
-        button.layer.shadowColor = UIColor.black.cgColor
-        button.layer.shadowRadius = 6
-        button.layer.shadowOpacity = 0.5
-        button.layer.shadowOffset = CGSize(width: 0, height: 0)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -85,7 +78,7 @@ class ScoreTableViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "scoreCell", for: indexPath) as! ScoreCell
         
-        cell.dateLabel.text = scoreArray[indexPath.row].date
+        cell.dateLabel.text = String(indexPath.row + 1) + ". " +  scoreArray[indexPath.row].date
         cell.scoreLabel.text = String(scoreArray[indexPath.row].score)
         
         return cell
@@ -94,15 +87,4 @@ class ScoreTableViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

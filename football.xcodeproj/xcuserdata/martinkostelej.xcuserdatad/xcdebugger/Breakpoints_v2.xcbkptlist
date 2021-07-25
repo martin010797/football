@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "219"
             endingLineNumber = "219"
-            landmarkName = "setSpeed(kazdychSekund:)"
+            landmarkName = "setSpeed(eachSeconds:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -81,22 +81,6 @@
             startingLineNumber = "163"
             endingLineNumber = "163"
             landmarkName = "pauseButtonePressed()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "672B668F-AF21-45D9-9ABE-87676055B9BA"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "football/ScoreTableViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
-            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

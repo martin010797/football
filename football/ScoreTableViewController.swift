@@ -28,7 +28,7 @@ class ScoreTableViewController: UIViewController, UITableViewDataSource, UITable
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+                
         if let data = UserDefaults.standard.value(forKey: SCORE_DATA_KEY) as? Data {
             let array = try? PropertyListDecoder().decode(Array<ScoreData>.self, from: data)
             scoreArray = array ?? [ScoreData]()
@@ -42,6 +42,10 @@ class ScoreTableViewController: UIViewController, UITableViewDataSource, UITable
         scoreLabel.text = "Dosiahnuté skóre: " + String(reachedScore)
                 
         playAgainButton.layer.cornerRadius = 10.0
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     func changeTableOfScoreAndSave() {
@@ -68,6 +72,7 @@ class ScoreTableViewController: UIViewController, UITableViewDataSource, UITable
         if isBeingDismissed && !started {
             NotificationCenter.default.post(name: NSNotification.Name("start"), object: nil)
             started = true
+            UIApplication.shared.statusBarStyle = UIStatusBarStyle.default
         }
     }
     

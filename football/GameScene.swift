@@ -52,6 +52,7 @@ class GameScene: SKScene {
     var score = DEFAULT_SCORE
     
     let livesLabelNode = SKLabelNode(fontNamed: "Verdana-Bold")
+    let comboLabelNode = SKLabelNode(fontNamed: "Verdana-Bold")
     let scoreLabelNode = SKLabelNode(fontNamed: "Verdana-Bold")
     let pauseLabelNode = SKLabelNode(fontNamed: "Verdana-Bold")
     
@@ -119,6 +120,15 @@ class GameScene: SKScene {
         livesLabelNode.verticalAlignmentMode = .top
         livesLabelNode.position = CGPoint(x: frame.midX - frame.size.width / 2 + 25, y: frame.midY - 10)
         topInfoBar.addChild(livesLabelNode)
+        
+        comboLabelNode.isHidden = true
+        comboLabelNode.fontColor = UIColor.blue
+        comboLabelNode.fontSize = 40
+        comboLabelNode.zPosition = 7
+        comboLabelNode.horizontalAlignmentMode = .center
+        comboLabelNode.verticalAlignmentMode = .top
+        comboLabelNode.position = CGPoint(x: frame.midX, y: frame.midY - 10)
+        topInfoBar.addChild(comboLabelNode)
         
         scoreLabelNode.text = "Skóre: " + String(score)
         scoreLabelNode.fontColor = UIColor.black
@@ -412,6 +422,7 @@ class GameScene: SKScene {
         xCoordMinSpeed = X_COORD_DEFAULT_MIN_SPEED
         xCoordMaxSpeed = X_COORD_DEFAULT_MAX_SPEED
         comboGoals = 0
+        comboLabelNode.isHidden = true
         scoreLabelNode.text = "Skóre: " + String(score)
         livesLabelNode.text = "❤️ " + String(numberOfLives)
         for ball in balls {
@@ -435,12 +446,22 @@ class GameScene: SKScene {
                         addChild(sparks)
                         sparks.run(SKAction.sequence([SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
                     }
+                    
                     if comboGoals < MAX_COMBO {
                         comboGoals += 1
                     }
+                    if comboGoals >= 1 {
+                        comboLabelNode.text = "x" + String(comboGoals + 1)
+                        if comboGoals >= MAX_COMBO {
+                            comboLabelNode.text = "x" + String(comboGoals)
+                        }
+                        comboLabelNode.isHidden = false
+                    }
+                    
                     score = score + comboGoals * 3
                     scoreLabelNode.text = "Skóre: " + String(score)
                     scoreLabel(node: ball, value: String(comboGoals * 3))
+                    
                     if (ball.userData!.value(forKey: "golden") != nil) {
                         let value = ball.userData!.value(forKey: "golden") as? Bool ?? false
                         if value{
@@ -457,6 +478,7 @@ class GameScene: SKScene {
                     }
                 }else{
                     comboGoals = 0
+                    comboLabelNode.isHidden = true
                 }
                 removeBall(ball: ball, index: index)
             }

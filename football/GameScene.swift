@@ -435,54 +435,56 @@ class GameScene: SKScene {
         for (index, ball) in balls.enumerated() {
             if (abs(ball.physicsBody!.velocity.dx) + abs(ball.physicsBody!.velocity.dy)) < 300 {
                 removeBall(ball: ball, index: index)
-            }
-            if ball.position.y < (frame.midY - frame.size.height * 4 / 10) {
-                removeBall(ball: ball, index: index)
-                loseLife()
-            }else if ball.position.y > (frame.midY + frame.size.height * 30 / 100) {
-                if ball.position.x > (frame.midX - frame.size.width / 8) && ball.position.x < (frame.midX + frame.size.width / 8) {
-                    if let sparks = SKEmitterNode(fileNamed: "Spark") {
-                        sparks.position = ball.position
-                        addChild(sparks)
-                        sparks.run(SKAction.sequence([SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
-                    }
-                    
-                    if comboGoals < MAX_COMBO {
-                        comboGoals += 1
-                    }
-                    if comboGoals >= 1 {
-                        comboLabelNode.text = "x" + String(comboGoals + 1)
-                        if comboGoals >= MAX_COMBO {
-                            comboLabelNode.text = "x" + String(comboGoals)
+            }else{
+                if ball.position.y < (frame.midY - frame.size.height * 4 / 10) {
+                    removeBall(ball: ball, index: index)
+                    loseLife()
+                }else if ball.position.y > (frame.midY + frame.size.height * 30 / 100) {
+                    if ball.position.x > (frame.midX - frame.size.width / 8) && ball.position.x < (frame.midX + frame.size.width / 8) {
+                        if let sparks = SKEmitterNode(fileNamed: "Spark") {
+                            sparks.position = ball.position
+                            addChild(sparks)
+                            sparks.run(SKAction.sequence([SKAction.wait(forDuration: 1), SKAction.removeFromParent()]))
                         }
-                        comboLabelNode.isHidden = false
-                    }
-                    
-                    score = score + comboGoals * 3
-                    scoreLabelNode.text = "Skóre: " + String(score)
-                    scoreLabel(node: ball, value: String(comboGoals * 3))
-                    
-                    if (ball.userData!.value(forKey: "golden") != nil) {
-                        let value = ball.userData!.value(forKey: "golden") as? Bool ?? false
-                        if value{
-                            numberOfLives += 1
-                            livesLabelNode.text = "❤️ " + String(numberOfLives)
-                            scoreLabel(node: ball, value: "❤️")
-                            if !soundsTurnedOff {
-                                run(extraLifeSound)
+                        
+                        if comboGoals < MAX_COMBO {
+                            comboGoals += 1
+                        }
+                        if comboGoals >= 1 {
+                            comboLabelNode.text = "x" + String(comboGoals + 1)
+                            if comboGoals >= MAX_COMBO {
+                                comboLabelNode.text = "x" + String(comboGoals)
+                            }
+                            comboLabelNode.isHidden = false
+                        }
+                        
+                        score = score + comboGoals * 3
+                        scoreLabelNode.text = "Skóre: " + String(score)
+                        scoreLabel(node: ball, value: String(comboGoals * 3))
+                        
+                        if (ball.userData!.value(forKey: "golden") != nil) {
+                            let value = ball.userData!.value(forKey: "golden") as? Bool ?? false
+                            if value{
+                                numberOfLives += 1
+                                livesLabelNode.text = "❤️ " + String(numberOfLives)
+                                scoreLabel(node: ball, value: "❤️")
+                                if !soundsTurnedOff {
+                                    run(extraLifeSound)
+                                }
                             }
                         }
+                        if !soundsTurnedOff {
+                            run(goalCelebrationSound)
+                        }
+                    }else{
+                        comboGoals = 0
+                        comboLabelNode.isHidden = true
                     }
-                    if !soundsTurnedOff {
-                        run(goalCelebrationSound)
-                    }
-                }else{
-                    comboGoals = 0
-                    comboLabelNode.isHidden = true
+                    removeBall(ball: ball, index: index)
                 }
-                removeBall(ball: ball, index: index)
             }
-            
         }
     }
+    
+    
 }

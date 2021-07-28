@@ -432,7 +432,7 @@ class GameScene: SKScene {
     }
     
     func checkGoal() {
-        for (index, ball) in balls.enumerated() {
+        for (index, ball) in balls.enumerated().reversed() {
             if (abs(ball.physicsBody!.velocity.dx) + abs(ball.physicsBody!.velocity.dy)) < 300 {
                 removeBall(ball: ball, index: index)
             }else{
